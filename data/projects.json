@@ -1,0 +1,130 @@
+{
+  "projects": [
+    {
+      "id": "bank-system",
+      "title": "Bank system",
+      "icon": "🏦",
+      "description": "A banking system for secure and easy account and transaction management.",
+      "specification": "A banking system designed to manage financial transactions, account operations, and user authentication. Features include automatic payments and advanced security to enhance reliability and user experience.",
+      "team": {
+        "composition": {
+          "backend": 2,
+          "frontend": 1,
+          "ai": 1,
+          "flutter": 1
+        },
+        "supervisor": {
+          "name": "Dr. Ahmed Khalid Ali",
+          "role": "Supervisor",
+          "avatar": "/avatars/ahmed-khalid.jpg",
+          "status": "online"
+        },
+        "coSupervisor": {
+          "name": "Eng. Rania Mohamed",
+          "role": "Co-Supervisor",
+          "avatar": "/avatars/rania-mohamed.jpg",
+          "status": "online"
+        },
+        "members": [
+          {
+            "name": "Ayman Salim Reda",
+            "role": "Backend",
+            "avatar": "/avatars/ayman-salim.jpg",
+            "status": "online"
+          },
+          {
+            "name": "Rania Mohamed",
+            "role": "Frontend",
+            "avatar": "/avatars/rania-m.jpg",
+            "status": "online"
+          }
+        ]
+      },
+      "fields": ["AI", "Security", "Automation"]
+    },
+    {
+      "id": "gym-system",
+      "title": "Gym system",
+      "icon": "💪",
+      "description": "A system for managing gym operations, including member registrations.",
+      "specification": "A comprehensive gym management system that handles member registrations, class scheduling, trainer assignments, and payment processing. Includes features for tracking member progress and attendance.",
+      "team": {
+        "composition": {
+          "backend": 1,
+          "frontend": 2,
+          "mobile": 1
+        },
+        "supervisor": {
+          "name": "Dr. Ahmed Khalid Ali",
+          "role": "Supervisor",
+          "avatar": "/avatars/ahmed-khalid.jpg",
+          "status": "online"
+        },
+        "coSupervisor": {
+          "name": "Eng. Rania Mohamed",
+          "role": "Co-Supervisor",
+          "avatar": "/avatars/rania-mohamed.jpg",
+          "status": "online"
+        },
+        "members": []
+      },
+      "fields": ["Mobile", "Web", "Management"]
+    },
+    {
+      "id": "health-pal",
+      "title": "Health Pal",
+      "icon": "🏥",
+      "description": "A health app that tracks activities, diet, sleep, and exercise.",
+      "specification": "An AI-powered health tracking application that provides personalized recommendations for diet, exercise, and sleep patterns. Includes integration with wearable devices and health monitoring systems.",
+      "team": {
+        "composition": {
+          "backend": 1,
+          "frontend": 1,
+          "ai": 2
+        },
+        "supervisor": {
+          "name": "Dr. Ahmed Khalid Ali",
+          "role": "Supervisor",
+          "avatar": "/avatars/ahmed-khalid.jpg",
+          "status": "online"
+        },
+        "coSupervisor": {
+          "name": "Eng. Rania Mohamed",
+          "role": "Co-Supervisor",
+          "avatar": "/avatars/rania-mohamed.jpg",
+          "status": "online"
+        },
+        "members": []
+      },
+      "fields": ["AI", "Healthcare", "Mobile"]
+    },
+    {
+      "id": "study-mate",
+      "title": "Study Mate",
+      "icon": "📚",
+      "description": "An AI-powered study assistant for students.",
+      "specification": "An intelligent study assistant that helps students organize their study materials, create study schedules, and track their progress. Features include AI-powered content summarization and quiz generation.",
+      "team": {
+        "composition": {
+          "backend": 1,
+          "frontend": 1,
+          "ai": 2
+        },
+        "supervisor": {
+          "name": "Dr. Ahmed Khalid Ali",
+          "role": "Supervisor",
+          "avatar": "/avatars/ahmed-khalid.jpg",
+          "status": "online"
+        },
+        "coSupervisor": {
+          "name": "Eng. Rania Mohamed",
+          "role": "Co-Supervisor",
+          "avatar": "/avatars/rania-mohamed.jpg",
+          "status": "online"
+        },
+        "members": []
+      },
+      "fields": ["AI", "Education", "Web"]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "fields": [
+    {
+      "id": "ai",
+      "name": "AI"
+    },
+    {
+      "id": "security",
+      "name": "Security"
+    },
+    {
+      "id": "web-mobile",
+      "name": "Web & Mobile Development"
+    },
+    {
+      "id": "iot",
+      "name": "Internet of things(IOT)"
+    },
+    {
+      "id": "software-engineering",
+      "name": "Software Engineering"
+    }
+  ]
+}
