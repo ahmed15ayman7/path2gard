@@ -1,0 +1,34 @@
+[
+    {
+        "question": "Hi",
+        "answer": "Hello! How can I help you?"
+    },
+    {
+        "question": "What is AI?",
+        "answer": "AI stands for Artificial Intelligence."
+    },
+    {
+        "question": "How does AI work?",
+        "answer": "AI works by using algorithms to process data and make decisions."
+    },
+    {
+        "question": "How does AI work?",
+        "answer": "يعمل الذكاء الاصطناعي باستخدام الخوارزميات لمعالجة البيانات واتخاذ القرارات."
+    },
+    {
+        "question": "What are the benefits of AI?",
+        "answer": "AI can automate tasks, improve efficiency, and provide insights."
+    },
+    {
+        "question": "What are the benefits of AI?",
+        "answer": "يمكن للذكاء الاصطناعي أتمتة المهام، وتحسين الكفاءة، وتوفير رؤى."
+    },
+    {
+        "question": "Can AI replace humans?",
+        "answer": "AI can assist humans but cannot fully replace them."
+    },
+    {
+        "question": "Can AI replace humans?",
+        "answer": "يمكن للذكاء الاصطناعي مساعدة البشر ولكنه لا يمكن أن يحل محلهم بالكامل."
+    }
+]

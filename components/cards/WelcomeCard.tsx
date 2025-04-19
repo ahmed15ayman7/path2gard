@@ -26,28 +26,28 @@ const WelcomeCard = ({
         </h2>
         <p className="text-gray-600">{message || defaultMessage}</p>
       </div>
- <div className="flex flex-col items-center gap-2 w-1/4">
-          <div className="relative w-20 h-20">
-            <div className="w-full h-full rounded-full bg-[#0A2647] flex items-center justify-center">
-              <span className="text-white text-xl font-bold">{progress}%</span>
-            </div>
-          </div>
-          {/* Progress Bar */}
-          <div className="w-32 h-1 bg-gray-200 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-[#0A2647] transition-all duration-500 ease-in-out" 
-              style={{ width: `${progress}%` }}
-            />
+      <div className="flex flex-col items-center gap-2 w-1/4">
+        <div className="relative w-20 h-20">
+          <div className="w-full h-full rounded-full bg-[#0A2647] flex items-center justify-center">
+            <span className="text-white text-xl font-bold">{progress}%</span>
           </div>
         </div>
+        {/* Progress Bar */}
+        <div className="w-32 h-1 bg-gray-200 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-[#0A2647] transition-all duration-500 ease-in-out"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      </div>
       <div className="flex items-center gap-8 w-1/4">
         {/* Progress Circle with Bar */}
-       
+
 
         {/* Illustration */}
         <div className="relative w-32 h-32">
           <Image
-            src="/images/student-illustration.png"
+            src="/images/woman-with-laptop-computer-sitting-floor-isolated-white-removebg-preview.svg"
             alt="Student illustration"
             width={128}
             height={128}

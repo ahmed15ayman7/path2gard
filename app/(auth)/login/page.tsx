@@ -6,7 +6,9 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { z } from "zod";
 import Image from "next/image";
-
+import { useUserStore } from "@/lib/zustand";
+import { useRouter } from "next/navigation";
+type UserType = "student" | "doctor" | "ta" | "admin";
 const schema = z.object({
   email: z.string().email("Invalid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
@@ -15,7 +17,8 @@ const schema = z.object({
 
 export default function SignIn() {
   const [formData, setFormData] = useState({ email: "", password: "", role: "student" });
-
+  let { setUserType } = useUserStore();
+  const router = useRouter();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -27,20 +30,29 @@ export default function SignIn() {
       toast.error(result.error.errors[0].message);
     } else {
       toast.success("Signed in successfully!");
+      setUserType(result.data.role as UserType);
+      if (result.data.role === "student") {
+        router.push("/dashboard");
+      } else if (result.data.role === "doctor") {
+        router.push("/doctor/graduation-project");
+      } else if (result.data.role === "ta") {
+        router.push("/ta/tracking");
+      } else if (result.data.role === "admin") {
+        router.push("/admin/graduation-project");
+      }
     }
   };
-
   return (
     <div className="flex h-screen w-full bg-[#0A2844] relative overflow-hidden">
       <div className="w-1/2 flex flex-col justify-center items-center text-white p-10 z-10">
         <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }}>
-        <Image
-              src="/images/logo-white.png"
-              alt="Path2Grad Logo"
-              width={400}
-              height={80}
-              className="cursor-pointer"
-            />
+          <Image
+            src="/images/logo-white.png"
+            alt="Path2Grad Logo"
+            width={400}
+            height={80}
+            className="cursor-pointer"
+          />
           <p className="text-sm mt-4 max-w-md text-center">
             Empowering computer science students with personalized learning plans, project
             management, collaboration tools, and AI support.

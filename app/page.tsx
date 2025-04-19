@@ -1,13 +1,18 @@
-import WelcomeCard from "@/components/cards/WelcomeCard";
+"use client";
+import { redirect } from "next/navigation";
+import { useUserStore } from "@/lib/zustand";
 
 export default function Home() {
-  return (
-   <div className="p-5">
-    <WelcomeCard
-  name="Ahmed"
-  progress={1}
-  isFirstTime={true}
-/>
-   </div>
-  );
+  const { userType } = useUserStore();
+  if (userType === "student") {
+    redirect("/dashboard");
+  } else if (userType === "doctor") {
+    redirect("/doctor/graduation-project");
+  } else if (userType === "ta") {
+    redirect("/ta/tracking");
+  } else if (userType === "admin") {
+    redirect("/admin/graduation-project");
+  } else {
+    redirect("/login");
+  }
 }
