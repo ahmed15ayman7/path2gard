@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import RoadmapSection from '@/components/track/RoadmapSection';
 import { Box, Avatar, Typography } from '@mui/material';
 interface Video {
@@ -86,7 +86,8 @@ const aiTrackContent: TrackContentProps = {
     ]
 };
 
-const TrackContent = ({ id }: { id: string }) => {
+const TrackContent = async ({ params }: { params: Promise<{ id: string }> }) => {
+    const { id } = use(params);
     const [expandedSection, setExpandedSection] = useState<string | null>(null);
     const [sections, setSections] = useState(aiTrackContent.sections);
     const [progress, setProgress] = useState(0);
