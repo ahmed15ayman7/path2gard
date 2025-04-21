@@ -24,7 +24,7 @@ export default function RootLayout({
   // Only render content when we're sure we're on the client
   const content = isClient ? (
     <>
-      <Navbar userType={userType ?? "student"} />
+      <Navbar userType={userType ?? "login"} />
       {children}
       <ChatDialog />
     </>

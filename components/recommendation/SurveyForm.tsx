@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useRouter } from "next/navigation";
 
 const questions = [
   {
@@ -60,9 +61,10 @@ const questions = [
 
 export default function SurveyForm({ onClose }: { onClose: () => void }) {
   const [answers, setAnswers] = useState<{ [key: number]: string }>({});
-
+  const router = useRouter();
   const handleSubmit = () => {
     // Here you can analyze the answers and recommend a track
+    router.push("/recommendation/servay");
     console.log(answers);
     onClose();
   };

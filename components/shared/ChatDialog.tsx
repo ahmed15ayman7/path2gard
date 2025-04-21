@@ -38,7 +38,7 @@ export default function ChatDialog() {
                 onClick={() => setOpen(!open)}
                 style={{
                     position: 'fixed',
-                    bottom: '20px',
+                    bottom: '50px',
                     right: '20px',
                     backgroundColor: '#0A2647',
                     color: 'white',
