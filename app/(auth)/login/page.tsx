@@ -23,24 +23,50 @@ export default function SignIn() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = schema.safeParse(formData);
-    if (!result.success) {
-      toast.error(result.error.errors[0].message);
-    } else {
-      toast.success("Signed in successfully!");
-      setUserType(result.data.role as UserType);
-      if (result.data.role === "student") {
-        router.push("/dashboard");
-      } else if (result.data.role === "doctor") {
-        router.push("/doctor/graduation-project");
-      } else if (result.data.role === "ta") {
-        router.push("/ta/tracking");
-      } else if (result.data.role === "admin") {
-        router.push("/admin/graduation-project");
-      }
+
+    const validation = schema.safeParse({ username, password, role });
+    if (!validation.success) {
+      toast.error("Please fill out all fields correctly.");
+      return;
     }
+
+    try {
+      const response = await axios.post("http://elgazery.runasp.net/api/login", {
+        username,
+        password,
+        role,
+      });
+
+      const { data } = response;
+
+      if (data?.success) {
+        toast.success(`Logged in as ${role}`);
+        // Store user or token here if needed
+
+        // Redirect based on role
+        switch (role) {
+          case "student":
+            router.push("/dashboard");
+            break;
+          case "doctor":
+            router.push("/doctor/graduation-project");
+            break;
+          case "admin":
+            router.push("/admin/graduation-project");
+            break;
+          default:
+            router.push("/");
+        }
+      } else {
+        toast.error("Invalid credentials or role mismatch.");
+      }
+    } catch (error: any) {
+      toast.error("Login failed. Please try again.");
+      console.error("Login error:", error);
+    }
+
   };
   return (
     <div className="flex h-screen w-full bg-[#0A2844] relative overflow-hidden">
