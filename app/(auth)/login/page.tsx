@@ -27,7 +27,8 @@ export default function SignIn() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const validation = schema.safeParse({ username, password, role });
+    const validation = schema.safeParse(formData);
+    const { email, password, role } = formData;
     if (!validation.success) {
       toast.error("Please fill out all fields correctly.");
       return;
@@ -35,7 +36,7 @@ export default function SignIn() {
 
     try {
       const response = await axios.post("http://elgazery.runasp.net/api/login", {
-        username,
+        email,
         password,
         role,
       });
