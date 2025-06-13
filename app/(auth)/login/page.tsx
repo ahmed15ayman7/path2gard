@@ -8,6 +8,7 @@ import { z } from "zod";
 import Image from "next/image";
 import { useUserStore } from "@/lib/zustand";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 type UserType = "student" | "doctor" | "ta" | "admin";
 const schema = z.object({
   email: z.string().email("Invalid email"),
