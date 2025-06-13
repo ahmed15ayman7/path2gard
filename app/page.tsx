@@ -4,13 +4,13 @@ import { useUserStore } from "@/lib/zustand";
 
 export default function Home() {
   const { userType } = useUserStore();
-  if (userType === "student") {
+  if (userType === "Student") {
     redirect("/dashboard");
-  } else if (userType === "doctor") {
+  } else if (userType === "Doctor") {
     redirect("/doctor/graduation-project");
-  } else if (userType === "ta") {
+  } else if (userType === "Assistant") {
     redirect("/ta/tracking");
-  } else if (userType === "admin") {
+  } else if (userType === "Admin") {
     redirect("/admin/graduation-project");
   } else {
     redirect("/login");

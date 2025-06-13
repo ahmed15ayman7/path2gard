@@ -11,9 +11,9 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { ChevronDownIcon } from "lucide-react"
 import { useUserStore } from "@/lib/zustand";
-type UserType = "student" | "doctor" | "ta" | "admin";
+type UserType = "Student" | "Doctor" | "Assistant" | "Admin";
 let navbarLinks = {
-  student: [
+  Student: [
     {
       name: "Dashboard",
       href: "/dashboard"
@@ -31,13 +31,13 @@ let navbarLinks = {
       href: "/recommendation"
     }
   ],
-  doctor: [
+  Doctor: [
     {
       name: "Graduation Project",
       href: "/doctor/graduation-project"
     }
   ],
-  ta: [
+  Assistant: [
     {
       name: "Tracking",
       href: "/ta/tracking"
@@ -47,7 +47,7 @@ let navbarLinks = {
       href: "/ta/graduation-project"
     }
   ],
-  admin: [
+  Admin: [
     {
       name: "Graduation Project",
       href: "/admin/graduation-project"

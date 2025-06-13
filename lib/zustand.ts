@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type UserType = "student" | "doctor" | "ta" | "admin" | null;
+type UserType = "Student" | "Doctor" | "Assistant" | "Admin" | null;
 
 interface UserState {
     userType: UserType;
@@ -13,7 +13,7 @@ export const useUserStore = create<UserState>((set) => {
 
     if (typeof window !== "undefined") {
         const stored = localStorage.getItem("userType");
-        if (stored === "student" || stored === "doctor" || stored === "ta" || stored === "admin") {
+        if (stored === "Student" || stored === "Doctor" || stored === "Assistant" || stored === "Admin") {
             initialType = stored;
         }
     }

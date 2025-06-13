@@ -9,15 +9,16 @@ import Image from "next/image";
 import { useUserStore } from "@/lib/zustand";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-type UserType = "student" | "doctor" | "ta" | "admin";
+import { signIn } from "next-auth/react";
+type UserType = "Student" | "Doctor" | "Assistant" | "Admin";
 const schema = z.object({
   email: z.string().email("Invalid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  role: z.enum(["student", "doctor", "ta", "admin"]),
+  role: z.enum(["Student", "Doctor", "Assistant", "Admin"]),
 });
 
 export default function SignIn() {
-  const [formData, setFormData] = useState({ email: "", password: "", role: "student" });
+  const [formData, setFormData] = useState({ email: "", password: "", role: "Student" });
   let { setUserType } = useUserStore();
   const router = useRouter();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,27 +36,26 @@ export default function SignIn() {
     }
 
     try {
-      const response = await axios.post("http://elgazery.runasp.net/api/login", {
+      const response = await signIn("credentials", {
         email,
         password,
         role,
+        redirect: false,
       });
 
-      const { data } = response;
-
-      if (data?.success) {
+      if (response?.ok) {
         toast.success(`Logged in as ${role}`);
         // Store user or token here if needed
-
+        setUserType(role as UserType);
         // Redirect based on role
         switch (role) {
-          case "student":
+          case "Student":
             router.push("/dashboard");
             break;
-          case "doctor":
+          case "Doctor":
             router.push("/doctor/graduation-project");
             break;
-          case "admin":
+          case "Admin":
             router.push("/admin/graduation-project");
             break;
           default:
@@ -94,10 +94,10 @@ export default function SignIn() {
             <TextField label="Email" name="email" variant="outlined" fullWidth onChange={handleChange} />
             <TextField label="Password" name="password" type="password" variant="outlined" fullWidth onChange={handleChange} />
             <RadioGroup name="role" value={formData.role} onChange={handleChange} className="flex flex-col">
-              <FormControlLabel value="student" control={<Radio />} label="Student" />
-              <FormControlLabel value="doctor" control={<Radio />} label="Doctor" />
-              <FormControlLabel value="ta" control={<Radio />} label="Teaching Assistant" />
-              <FormControlLabel value="admin" control={<Radio />} label="Projects Admin" />
+              <FormControlLabel value="Student" control={<Radio />} label="Student" />
+              <FormControlLabel value="Doctor" control={<Radio />} label="Doctor" />
+              <FormControlLabel value="Assistant" control={<Radio />} label="Teaching Assistant" />
+              <FormControlLabel value="Admin" control={<Radio />} label="Projects Admin" />
             </RadioGroup>
             <Button type="submit" variant="contained" fullWidth className="bg-[#0A2844] text-white">Sign In</Button>
           </form>
