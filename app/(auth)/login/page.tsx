@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { z } from "zod";
 import Image from "next/image";
-import { useUserStore } from "@/lib/zustand";
+import { useUserStore, useUserEmail } from "@/lib/zustand";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { signIn } from "next-auth/react";
@@ -20,6 +20,7 @@ const schema = z.object({
 export default function SignIn() {
   const [formData, setFormData] = useState({ email: "", password: "", role: "Student" });
   let { setUserType } = useUserStore();
+  let { setUserEmail } = useUserEmail();
   const router = useRouter();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -47,6 +48,7 @@ export default function SignIn() {
         toast.success(`Logged in as ${role}`);
         // Store user or token here if needed
         setUserType(role as UserType);
+        setUserEmail(email);
         // Redirect based on role
         switch (role) {
           case "Student":

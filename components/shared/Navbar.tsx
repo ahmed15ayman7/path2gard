@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { ChevronDownIcon } from "lucide-react"
-import { useUserStore } from "@/lib/zustand";
+import { useUserStore, useUserEmail } from "@/lib/zustand";
 type UserType = "Student" | "Doctor" | "Assistant" | "Admin";
 let navbarLinks = {
   Student: [
@@ -59,6 +59,7 @@ let navbarLinks = {
 const Navbar = ({ userType }: { userType: UserType | "login" }) => {
   const pathname = usePathname()
   const { setUserType } = useUserStore();
+  const { userEmail } = useUserEmail();
   const isActive = (path: string) => {
     return pathname?.startsWith(path)
   }
@@ -91,8 +92,8 @@ const Navbar = ({ userType }: { userType: UserType | "login" }) => {
                   <AvatarFallback>AA</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
-                  <span>Ahmed Ali</span>
-                  <span className="text-xs">AI</span>
+                  <span>{userEmail?.split("@")[0]}</span>
+                  <span className="text-xs">{userEmail}</span>
                 </div>
                 <ChevronDownIcon className="w-4 h-4" />
               </div>

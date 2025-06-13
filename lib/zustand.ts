@@ -8,6 +8,12 @@ interface UserState {
     setUserType: (type: UserType) => void;
 }
 
+interface UserEmailState {
+    userEmail: string | null;
+    isClient: boolean;
+    setUserEmail: (email: string) => void;
+}
+
 export const useUserStore = create<UserState>((set) => {
     let initialType: UserType = null;
 
@@ -26,6 +32,28 @@ export const useUserStore = create<UserState>((set) => {
                 localStorage.setItem("userType", type ?? "" as string);
             }
             set({ userType: type });
+        },
+    };
+});
+
+export const useUserEmail = create<UserEmailState>((set) => {
+    let initialEmail: string | null = null;
+
+    if (typeof window !== "undefined") {
+        const stored = localStorage.getItem("userEmail");
+        if (stored) {
+            initialEmail = stored;
+        }
+    }
+
+    return {
+        userEmail: initialEmail,
+        isClient: false,
+        setUserEmail: (email) => {
+            if (typeof window !== "undefined") {
+                localStorage.setItem("userEmail", email ?? "" as string);
+            }
+            set({ userEmail: email });
         },
     };
 });
