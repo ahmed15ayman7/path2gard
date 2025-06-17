@@ -30,5 +30,25 @@
     {
         "question": "Can AI replace humans?",
         "answer": "يمكن للذكاء الاصطناعي مساعدة البشر ولكنه لا يمكن أن يحل محلهم بالكامل."
+    },
+    {
+        "question": "How do I submit my project files?",
+        "answer": "You can submit project files through the \"My Projects\" section of your dashboard"
+    },
+    {
+        "question": "Where can I find the project requirements?",
+        "answer": "Project requirements are available under the \"Project Details\" tab for each project"
+    },
+    {
+        "question": "How do I request to join a project team?",
+        "answer": "Navigate to the project you want to join and click the \"Request to Join\" button"
+    },
+    {
+        "question": "What is the deadline for the current sprint?",
+        "answer": "The current sprint ends on June 15th, 2025"
+    },
+    {
+        "question": "How can I contact my supervisor?",
+        "answer": "You can message your supervisor directly through the \"Messages\" section or view their contact information in the \"Supervisors\" section"
     }
 ]
