@@ -16,6 +16,11 @@ const schema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
   role: z.enum(["Student", "Doctor", "Assistant", "Admin"]),
 });
+let Admins = [{ email: "admin1@path2grad.com", password: "admin123",name:'Admin One' }, { email: "admin2@path2grad.com", password: "admin456",name:"Admin Two" }, { email: "admin3@path2grad.com", password: "admin789",name:"Admin Three" }];
+
+let Students = [{ email: "john.doe@student.edu", password: "student123",name:"John Doe" }, { email: "jane.smith@student.edu", password: "student456",name:"Jane Smith" }, { email: "robert.johnson@student.edu", password: "student789",name:"Robert Johnson" }, { email: "emily.davis@student.edu", password: "student012",name:"Emily Davis" }, { email: "michael.wilson@student.edu", password: "student345",name:"Michael Wilson" }, { email: "sarah.brown@student.edu", password: "student678",name:"Sarah Brown" }, { email: "david.taylor@student.edu", password: "student901",name:"David Taylor" }, { email: "jessica.anderson@student.edu", password: "student234",name:"Jessica Anderson" }, { email: "thomas.martinez@student.edu", password: "student567",name:"Thomas Martinez" }, { email: "lisa.robinson@student.edu", password: "student890",name:"Lisa Robinson" }, { email: "james.clark@student.edu",password: "student112",name:"James Clark" }, { email: "patricia.lewis@student.edu",password: "student113",name:"Patricia Lewis" }, { email: "christopher.lee@student.edu",password: "student114",name:"Christopher Lee" }, { email: "amanda.walker@student.edu",password: "student115",name:"Amanda Walker" }, { email: "matthew.hall@student.edu",password:"student116",name:"Matthew Hall"}]
+
+let Doctors = [{ email: "smith@university.edu", password: "smith123",name:"Dr. Smith" }, { email: "johnson@university.edu", password: "johnson123",name:"Dr. Johnson" }, { email: "williams@university.edu", password: "williams123",name:"Dr. Williams" }, { email: "brown@university.edu", password: "brown123",name:"Dr. Brown" }, { email: "davis@university.edu", password: "davis123",name:"Dr. Davis" }]
 
 export default function SignIn() {
   const [formData, setFormData] = useState({ email: "", password: "", role: "Student" });
@@ -37,37 +42,77 @@ export default function SignIn() {
     }
 
     try {
-      const response = await signIn("credentials", {
-        email,
-        password,
-        role,
-        redirect: false,
-      });
+  
 
-      if (response?.ok) {
-        toast.success(`Logged in as ${role}`);
-        // Store user or token here if needed
-        setUserType(role as UserType);
-        setUserEmail(email);
-        // Redirect based on role
         switch (role) {
           case "Student":
-            router.push("/dashboard");
+            if (Students.some(student => student.email === email && student.password === password)) {
+              const response = await signIn("credentials", {
+                email,
+                password,
+                name:role === "Student" ? Students.find(student => student.email === email)?.name : role === "Doctor" ? Doctors.find(doctor => doctor.email === email)?.name : role === "Assistant" ? Doctors.find(assistant => assistant.email === email)?.name : Admins.find(admin => admin.email === email)?.name,
+                role,
+                redirect: false,
+              });
+              if (response?.ok) {
+              setUserEmail({ email, name: (Students.find(student => student.email === email)?.name)||"john doe", role });
+              setUserType(role as UserType);
+              toast.success(`Logged in as ${role}`);
+              router.push("/dashboard");
+              } else {
+                toast.error("الايميل او اسم الدور او الكلمة السرية غير صحيحة");
+              }
+            } else {
+              toast.error("الايميل او اسم الدور او الكلمة السرية غير صحيحة");
+            }
             break;
           case "Doctor":
-            router.push("/doctor/graduation-project");
+            if (Doctors.some(doctor => doctor.email === email && doctor.password === password)) {
+              const response = await signIn("credentials", {
+                email,
+                password,
+                name:Doctors.find(doctor => doctor.email === email)?.name,
+                role,
+                redirect: false,
+              });
+              if (response?.ok) {
+              setUserEmail({ email, name: (Doctors.find(doctor => doctor.email === email)?.name)||"john doe", role });
+              setUserType(role as UserType);
+              toast.success(`Logged in as ${role}`);
+              router.push("/doctor/graduation-project");
+              } else {
+                toast.error("الايميل او اسم الدور او الكلمة السرية غير صحيحة");
+              }
+            } else {
+              toast.error("الايميل او اسم الدور او الكلمة السرية غير صحيحة");
+            }
             break;
           case "Admin":
-            router.push("/admin/graduation-project");
+            if (Admins.some(admin => admin.email === email && admin.password === password)) {
+              const response = await signIn("credentials", {
+                email,
+                password,
+                name:Admins.find(admin => admin.email === email)?.name,
+                role,
+                redirect: false,
+              });
+              if (response?.ok) {
+              setUserEmail({ email, name: (Admins.find(admin => admin.email === email)?.name)||"john doe", role });
+              setUserType(role as UserType);
+              toast.success(`Logged in as ${role}`);
+              router.push("/admin/graduation-project");} else {
+                toast.error("الايميل او اسم الدور او الكلمة السرية غير صحيحة");
+              }
+            } else {
+              toast.error("الايميل او اسم الدور او الكلمة السرية غير صحيحة");
+            }
             break;
           default:
-            router.push("/");
+            toast.error("الايميل او اسم الدور او الكلمة السرية غير صحيحة");
         }
-      } else {
-        toast.error("Invalid credentials or role mismatch.");
-      }
+      
     } catch (error: any) {
-      toast.error("Login failed. Please try again.");
+      toast.error("الايميل او اسم الدور او الكلمة السرية غير صحيحة");
       console.error("Login error:", error);
     }
 

@@ -5,6 +5,7 @@ import Navbar from '@/components/shared/Navbar'
 import ChatDialog from '@/components/shared/ChatDialog'
 import { useUserStore } from "@/lib/zustand";
 import { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -40,6 +41,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <ToastContainer
+          position="top-left"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+        />
         {content}
       </body>
     </html>

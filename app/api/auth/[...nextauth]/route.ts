@@ -1,4 +1,3 @@
-import axios from 'axios';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
@@ -10,21 +9,23 @@ const handler = NextAuth({
                 email: { label: 'Email', type: 'email' },
                 password: { label: 'Password', type: 'password' },
                 role: { label: 'Role', type: 'text' },
+                name: { label: 'Name', type: 'text' },
             },
             async authorize(credentials) {
                 try {
-                    const response = await axios.post("http://elgazery.runasp.net/api/Account/login", {
-                        email: credentials?.email || '',
-                        password: credentials?.password || '',
-                        role: credentials?.role || '',
-                    });
-                    const { token } = response.data;
-                    if (token) {
-                        return token;
-                    }
+                    // const response = await axios.post("http://elgazery.runasp.net/api/Account/login", {
+                    //     email: credentials?.email || '',
+                    //     password: credentials?.password || '',
+                    //     role: credentials?.role || '',
+                    // });
+                    // const { token } = response.data;
+                    
 
 
-                    return null;
+                    return {
+                        id: '1',
+                        ...credentials,
+                    };
                 } catch (error) {
                     console.log(error);
                     return null;
@@ -35,14 +36,15 @@ const handler = NextAuth({
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                token.token = (user as any);
+                token.user = (user as any);
+
                 return token;
             }
             return token;
         },
         async session({ session, token }) {
             if (token) {
-                session.token = token.token as string;
+                session.user = token.user as any;
             }
             return session;
         },

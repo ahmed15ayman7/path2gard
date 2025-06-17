@@ -9,9 +9,9 @@ interface UserState {
 }
 
 interface UserEmailState {
-    userEmail: string | null;
+    userEmail: { email: string, name: string, role: string } | null;
     isClient: boolean;
-    setUserEmail: (email: string) => void;
+    setUserEmail: (email: { email: string, name: string, role: string }) => void;
 }
 
 export const useUserStore = create<UserState>((set) => {
@@ -37,12 +37,12 @@ export const useUserStore = create<UserState>((set) => {
 });
 
 export const useUserEmail = create<UserEmailState>((set) => {
-    let initialEmail: string | null = null;
+    let initialEmail: { email: string, name: string, role: string } | null = null;
 
     if (typeof window !== "undefined") {
         const stored = localStorage.getItem("userEmail");
         if (stored) {
-            initialEmail = stored;
+            initialEmail = JSON.parse(stored);
         }
     }
 
@@ -51,7 +51,7 @@ export const useUserEmail = create<UserEmailState>((set) => {
         isClient: false,
         setUserEmail: (email) => {
             if (typeof window !== "undefined") {
-                localStorage.setItem("userEmail", email ?? "" as string);
+                localStorage.setItem("userEmail", JSON.stringify(email));
             }
             set({ userEmail: email });
         },

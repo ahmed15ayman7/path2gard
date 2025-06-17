@@ -92,8 +92,8 @@ const Navbar = ({ userType }: { userType: UserType | "login" }) => {
                   <AvatarFallback>AA</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
-                  <span>{userEmail?.split("@")[0]}</span>
-                  <span className="text-xs">{userEmail}</span>
+                  <span>{userEmail?.name}</span>
+                  <span className="text-xs">{userEmail?.email}</span>
                 </div>
                 <ChevronDownIcon className="w-4 h-4" />
               </div>
