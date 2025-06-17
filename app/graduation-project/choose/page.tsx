@@ -7,6 +7,7 @@ import ProjectsBank from "@/components/project/ProjectsBank";
 function ProjectBankPage() {
   const searchParams = useSearchParams();
   
+  
   return (
     <div>
       <ProjectsBank />

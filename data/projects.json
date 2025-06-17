@@ -16,31 +16,35 @@
         "supervisor": {
           "name": "Dr. Ahmed Khalid Ali",
           "role": "Supervisor",
-          "avatar": "/avatars/ahmed-khalid.jpg",
+          "image": "/avatars/ahmed-khalid.jpg",
           "status": "online"
         },
         "coSupervisor": {
           "name": "Eng. Rania Mohamed",
           "role": "Co-Supervisor",
-          "avatar": "/avatars/rania-mohamed.jpg",
+          "image": "/avatars/rania-mohamed.jpg",
           "status": "online"
         },
         "members": [
           {
             "name": "Ayman Salim Reda",
             "role": "Backend",
-            "avatar": "/avatars/ayman-salim.jpg",
+            "image": "/avatars/ayman-salim.jpg",
             "status": "online"
           },
           {
             "name": "Rania Mohamed",
             "role": "Frontend",
-            "avatar": "/avatars/rania-m.jpg",
+            "image": "/avatars/rania-m.jpg",
             "status": "online"
           }
         ]
       },
-      "fields": ["AI", "Security", "Automation"]
+      "fields": [
+        "AI",
+        "Security",
+        "Automation"
+      ]
     },
     {
       "id": "gym-system",
@@ -57,18 +61,22 @@
         "supervisor": {
           "name": "Dr. Ahmed Khalid Ali",
           "role": "Supervisor",
-          "avatar": "/avatars/ahmed-khalid.jpg",
+          "image": "/avatars/ahmed-khalid.jpg",
           "status": "online"
         },
         "coSupervisor": {
           "name": "Eng. Rania Mohamed",
           "role": "Co-Supervisor",
-          "avatar": "/avatars/rania-mohamed.jpg",
+          "image": "/avatars/rania-mohamed.jpg",
           "status": "online"
         },
         "members": []
       },
-      "fields": ["Mobile", "Web", "Management"]
+      "fields": [
+        "Mobile",
+        "Web",
+        "Management"
+      ]
     },
     {
       "id": "health-pal",
@@ -85,18 +93,22 @@
         "supervisor": {
           "name": "Dr. Ahmed Khalid Ali",
           "role": "Supervisor",
-          "avatar": "/avatars/ahmed-khalid.jpg",
+          "image": "/avatars/ahmed-khalid.jpg",
           "status": "online"
         },
         "coSupervisor": {
           "name": "Eng. Rania Mohamed",
           "role": "Co-Supervisor",
-          "avatar": "/avatars/rania-mohamed.jpg",
+          "image": "/avatars/rania-mohamed.jpg",
           "status": "online"
         },
         "members": []
       },
-      "fields": ["AI", "Healthcare", "Mobile"]
+      "fields": [
+        "AI",
+        "Healthcare",
+        "Mobile"
+      ]
     },
     {
       "id": "study-mate",
@@ -113,18 +125,65 @@
         "supervisor": {
           "name": "Dr. Ahmed Khalid Ali",
           "role": "Supervisor",
-          "avatar": "/avatars/ahmed-khalid.jpg",
+          "image": "/avatars/ahmed-khalid.jpg",
           "status": "online"
         },
         "coSupervisor": {
           "name": "Eng. Rania Mohamed",
           "role": "Co-Supervisor",
-          "avatar": "/avatars/rania-mohamed.jpg",
+          "image": "/avatars/rania-mohamed.jpg",
           "status": "online"
         },
         "members": []
       },
-      "fields": ["AI", "Education", "Web"]
+      "fields": [
+        "AI",
+        "Education",
+        "Web"
+      ]
+    },
+    {
+      "id": "pm4xyc8uum",
+      "icon": "📦",
+      "title": "huu",
+      "projectName": "huu",
+      "projectDescription": "",
+      "projectField": [],
+      "teamSize": 3,
+      "members": [
+        {
+          "id": "lisa.robinson@student.edu",
+          "name": "Lisa Robinson",
+          "image": "/images/user2.jpg",
+          "field": "AI",
+          "role": "Student"
+        },
+        {
+          "id": "james.clark@student.edu",
+          "name": "James Clark",
+          "image": "/images/user1.jpg",
+          "field": "AI",
+          "role": "Student"
+        },
+        {
+          "id": "christopher.lee@student.edu",
+          "name": "Christopher Lee",
+          "image": "/images/user1.jpg",
+          "field": "AI",
+          "role": "Student"
+        }
+      ],
+      "supervisor": {
+        "id": "smith@university.edu",
+        "name": "Dr. Smith",
+        "image": "/images/user1.jpg",
+        "field": "AI",
+        "email": "smith@university.edu",
+        "role": "Doctor"
+      },
+      "projectFiles": [],
+      "projectRequirements": [],
+      "description": ""
     }
   ]
 }

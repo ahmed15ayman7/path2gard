@@ -29,6 +29,7 @@ import { ChevronDown } from "@/components/icons";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { Search, Check, X } from "@/components/icons";
+// import { useProjectStore } from "@/lib/zustand";
 
 interface ProjectField {
   id: string;
@@ -40,6 +41,7 @@ interface Supervisor {
   image: string;
   name: string;
   field: string;
+  email: string;
 }
 
 interface Member {
@@ -48,6 +50,10 @@ interface Member {
   name: string;
   field?: ProjectField;
 }
+
+let Students = [{ email: "john.doe@student.edu", password: "student123",name:"John Doe" }, { email: "jane.smith@student.edu", password: "student456",name:"Jane Smith" }, { email: "robert.johnson@student.edu", password: "student789",name:"Robert Johnson" }, { email: "emily.davis@student.edu", password: "student012",name:"Emily Davis" }, { email: "michael.wilson@student.edu", password: "student345",name:"Michael Wilson" }, { email: "sarah.brown@student.edu", password: "student678",name:"Sarah Brown" }, { email: "david.taylor@student.edu", password: "student901",name:"David Taylor" }, { email: "jessica.anderson@student.edu", password: "student234",name:"Jessica Anderson" }, { email: "thomas.martinez@student.edu", password: "student567",name:"Thomas Martinez" }, { email: "lisa.robinson@student.edu", password: "student890",name:"Lisa Robinson" }, { email: "james.clark@student.edu",password: "student112",name:"James Clark" }, { email: "patricia.lewis@student.edu",password: "student113",name:"Patricia Lewis" }, { email: "christopher.lee@student.edu",password: "student114",name:"Christopher Lee" }, { email: "amanda.walker@student.edu",password: "student115",name:"Amanda Walker" }, { email: "matthew.hall@student.edu",password:"student116",name:"Matthew Hall"}]
+
+let Doctors = [{ email: "smith@university.edu", password: "smith123",name:"Dr. Smith" }, { email: "johnson@university.edu", password: "johnson123",name:"Dr. Johnson" }, { email: "williams@university.edu", password: "williams123",name:"Dr. Williams" }, { email: "brown@university.edu", password: "brown123",name:"Dr. Brown" }, { email: "davis@university.edu", password: "davis123",name:"Dr. Davis" }]
 
 const CustomizeProject = () => {
   const router = useRouter();
@@ -133,47 +139,67 @@ const CustomizeProject = () => {
     field.name.toLowerCase().includes(memberFieldsSearchQuery.toLowerCase())
   );
 
-  const supervisors = [
-    {
-      id: "1",
-      image: "/images/user1.jpg",
-      name: "Dr. Ahmed Khalid Ali",
-      field: "AI",
-    },
-    {
-      id: "2",
-      image: "/images/user1.jpg",
-      name: "Dr. Rania Mohamed Gamal",
-      field: "Security",
-    },
-    {
-      id: "3",
-      image: "/images/user1.jpg",
-      name: "Dr. Nagwa Ahmed Mahmoud",
-      field: "Security",
-    },
-    {
-      id: "4",
-      image: "/images/user1.jpg",
-      name: "Dr. Ayman Salim Reda",
-      field: "AI",
-    },
-  ];
+  const supervisors = Doctors.map((doctor,index) => ({
+    id: doctor.email,
+    image: index%2==0?"/images/user1.jpg":"/images/user2.jpg",
+    name: doctor.name,
+    field: index==0?"AI":index==1?"Security":index==2?"Web":index==3?"Mobile":"AI",
+    role: "Doctor",
+    email: doctor.email,
+  }));
+  const members = Students.map((student,index) => ({
+    id: student.email,
+    image: index%2==0?"/images/user1.jpg":"/images/user2.jpg",
+    name: student.name,
+      field: {
+        id: index==0?"1":index==1?"2":index==2?"3":index==3?"4":"1",
+        name: index==0?"AI":index==1?"Security":index==2?"Web":index==3?"Mobile":"AI",
+      },
+      role: "Student",
+  }));
 
-  const members = [
-    { id: "1", image: "/images/user1.jpg", name: "Ayman Salim Reda" },
-    { id: "2", image: "/images/user1.jpg", name: "Rania Mohamed" },
-    { id: "3", image: "/images/user1.jpg", name: "Rania Mohamed" },
-    { id: "4", image: "/images/user1.jpg", name: "Rania Mohamed" },
-  ];
 
+// const {addProject} = useProjectStore();
   const handleMemberFieldSearch = (index: number, query: string) => {
     setMemberFieldsSearchQuery(query);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Here you would typically save the project data
-    router.push("/graduation-project/files");
+    let response: any = await fetch("/api/projects", {
+      method: "POST",
+      body: JSON.stringify({
+      id: 1,
+      icon: "📦",
+      title: projectName,
+      projectName: projectName,
+      projectDescription: projectBrief,
+      specification: projectBrief,
+      projectField: selectedFields.map((field) => field.name),
+      teamSize: teamSize,
+      members: selectedMembers.map((member) => ({
+        id: member.id,
+        name: member.name,
+        image: member.image,
+        field: member.field?.name || "",
+        role: "Student",
+      })),
+      supervisor: [selectedSupervisor, selectedCoSupervisor].filter(Boolean).map((supervisor) => ({
+        id: supervisor?.id || "",
+        name: supervisor?.name || "",
+        image: supervisor?.image || "",
+        field: supervisor?.field || "",
+        email: supervisor?.email || "",
+        role: "Doctor" as const,
+      }))[0],
+      projectFiles: [],
+      projectRequirements: [],
+      description: projectBrief,
+    }),
+  });
+    let data: any = await response.json();
+    router.push(`/graduation-project/files?id=${data.id}`);
+    console.log(data);
   };
 
   return (

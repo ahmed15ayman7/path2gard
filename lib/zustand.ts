@@ -14,6 +14,16 @@ interface UserEmailState {
     setUserEmail: (email: { email: string, name: string, role: string }) => void;
 }
 
+interface TrackEnrolledState {
+    trackEnrolled: boolean;
+    setTrackEnrolled: (trackEnrolled: boolean) => void;
+}
+
+interface ProjectEnrolledState {
+    projectEnrolled: boolean;
+    setProjectEnrolled: (projectEnrolled: boolean) => void;
+}
+
 export const useUserStore = create<UserState>((set) => {
     let initialType: UserType = null;
 
@@ -57,7 +67,42 @@ export const useUserEmail = create<UserEmailState>((set) => {
         },
     };
 });
-
+export const useTrackEnrolled = create<TrackEnrolledState>((set) => {
+    let initialTrackEnrolled: boolean = false;
+    if (typeof window !== "undefined") {
+        const stored = localStorage.getItem("trackEnrolled");
+        if (stored) {
+            initialTrackEnrolled = JSON.parse(stored);
+        }
+    }
+    return {
+        trackEnrolled: initialTrackEnrolled,
+        setTrackEnrolled: (trackEnrolled) => {
+            if (typeof window !== "undefined") {
+                localStorage.setItem("trackEnrolled", JSON.stringify(trackEnrolled));
+            }
+            set({ trackEnrolled });
+        },
+    };
+});
+export const useProjectEnrolled = create<ProjectEnrolledState>((set) => {
+    let initialProjectEnrolled: boolean = false;
+    if (typeof window !== "undefined") {
+        const stored = localStorage.getItem("projectEnrolled");
+        if (stored) {
+            initialProjectEnrolled = JSON.parse(stored);
+        }
+    }
+    return {
+        projectEnrolled: initialProjectEnrolled,
+        setProjectEnrolled: (projectEnrolled) => {
+            if (typeof window !== "undefined") {
+                localStorage.setItem("projectEnrolled", JSON.stringify(projectEnrolled));
+            }   
+            set({ projectEnrolled });
+        },
+    };
+});
 if (typeof window !== 'undefined') {
     useUserStore.setState({ isClient: true });
 }

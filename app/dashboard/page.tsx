@@ -3,10 +3,11 @@ import { useState } from 'react';
 import EnrollmentCard from '@/components/cards/EnrollmentCard';
 import ProgressCard from '@/components/cards/ProgressCard';
 import WelcomeCard from '@/components/cards/WelcomeCard';
+import { useProjectEnrolled, useTrackEnrolled } from '@/lib/zustand';
 
 export default function Dashboard() {
-  const [isTrackEnrolled, setIsTrackEnrolled] = useState(false);
-  const [isProjectEnrolled, setIsProjectEnrolled] = useState(false);
+  const { trackEnrolled, setTrackEnrolled } = useTrackEnrolled();
+  const { projectEnrolled, setProjectEnrolled } = useProjectEnrolled();
 
   // Example data for the track
   const trackData = {
@@ -66,10 +67,12 @@ export default function Dashboard() {
       <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-8 relative">
         {/* Track Section */}
         <div className="flex justify-center items-center">
-          {!isTrackEnrolled ? (
+          {!trackEnrolled ? (
             <EnrollmentCard
               type="track"
-              onEnrollClick={() => setIsTrackEnrolled(true)}
+              onEnrollClick={() => {
+                setTrackEnrolled(true);
+              }}
             />
           ) : (
             <ProgressCard
@@ -85,10 +88,12 @@ export default function Dashboard() {
 
         {/* Project Section */}
         <div className="flex justify-center items-center">
-          {!isProjectEnrolled ? (
+          {!projectEnrolled ? (
             <EnrollmentCard
               type="project"
-              onEnrollClick={() => setIsProjectEnrolled(true)}
+              onEnrollClick={() => {
+                setProjectEnrolled(true);
+              }}
             />
           ) : (
             <ProgressCard

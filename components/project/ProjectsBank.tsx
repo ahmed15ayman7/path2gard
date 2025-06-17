@@ -8,7 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 interface TeamMember {
   name: string;
   role: string;
-  avatar: string;
+  image: string;
   status: string;
 }
 
@@ -46,7 +46,7 @@ const ProjectsBank = () => {
     const fetchProjects = async () => {
       try {
         const response = await axios.get('/api/projects');
-        const fetchedProjects = response.data.projects;
+        const fetchedProjects = response.data;
         setProjects(fetchedProjects);
         
         // Get selected project from URL or default to first project
@@ -131,7 +131,7 @@ const ProjectsBank = () => {
             <div className="bg-white rounded-lg p-6 shadow-lg">
               <h3 className="text-xl font-semibold mb-4">Team Composition</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {Object.entries(selectedProject.team.composition).map(([role, count]) => (
+                {Object.entries(selectedProject?.team?.composition||{}).map(([role, count]:any) => (
                   <div key={role} className="text-center p-3 bg-gray-50 rounded-lg">
                     <div className="font-medium capitalize">{role}</div>
                     <div className="text-lg font-bold text-[#0A2647]">{count}</div>
@@ -144,7 +144,7 @@ const ProjectsBank = () => {
             <div className="bg-white rounded-lg p-6 shadow-lg">
               <h3 className="text-xl font-semibold mb-4">Project Fields</h3>
               <div className="flex flex-wrap gap-2">
-                {selectedProject.fields.map((field) => (
+                {selectedProject?.fields?.map((field) => (
                   <span
                     key={field}
                     className="px-3 py-1 bg-[#0A2647]/10 text-[#0A2647] rounded-full text-sm"
@@ -164,21 +164,21 @@ const ProjectsBank = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Avatar>
-                      <AvatarImage src={selectedProject.team.supervisor.avatar} />
+                      <AvatarImage src={selectedProject?.team?.supervisor?.image} />
                       <AvatarFallback>
-                        {selectedProject.team.supervisor.name
+                        {selectedProject?.team?.supervisor?.name
                           .split(' ')
                           .map(n => n[0])
                           .join('')}
                       </AvatarFallback>
                     </Avatar>
                     <div>
-                      <div className="font-medium">{selectedProject.team.supervisor.name}</div>
+                      <div className="font-medium">{selectedProject?.team?.supervisor?.name}</div>
                       <div className="text-sm text-gray-500">Supervisor</div>
                     </div>
                   </div>
                   <div className={`w-2 h-2 rounded-full ${
-                    selectedProject.team.supervisor.status === 'online' 
+                    selectedProject?.team?.supervisor?.status === 'online' 
                       ? 'bg-green-500' 
                       : 'bg-gray-300'
                   }`} />
@@ -188,36 +188,36 @@ const ProjectsBank = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Avatar>
-                      <AvatarImage src={selectedProject.team.coSupervisor.avatar} />
+                      <AvatarImage src={selectedProject?.team?.coSupervisor?.image} />
                       <AvatarFallback>
-                        {selectedProject.team.coSupervisor.name
+                        {selectedProject?.team?.coSupervisor?.name
                           .split(' ')
                           .map(n => n[0])
                           .join('')}
                       </AvatarFallback>
                     </Avatar>
                     <div>
-                      <div className="font-medium">{selectedProject.team.coSupervisor.name}</div>
+                      <div className="font-medium">{selectedProject?.team?.coSupervisor?.name}</div>
                       <div className="text-sm text-gray-500">Co-Supervisor</div>
                     </div>
                   </div>
                   <div className={`w-2 h-2 rounded-full ${
-                    selectedProject.team.coSupervisor.status === 'online' 
+                    selectedProject?.team?.coSupervisor?.status === 'online' 
                       ? 'bg-green-500' 
                       : 'bg-gray-300'
                   }`} />
                 </div>
 
                 {/* Team Members */}
-                {selectedProject.team.members.map((member, index) => (
+                {selectedProject?.team?.members?.map((member:any, index:any) => (
                   <div key={index} className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <Avatar>
-                        <AvatarImage src={member.avatar} />
+                        <AvatarImage src={member.image} />
                         <AvatarFallback>
                           {member.name
                             .split(' ')
-                            .map(n => n[0])
+                            .map((n:any) => n[0])
                             .join('')}
                         </AvatarFallback>
                       </Avatar>

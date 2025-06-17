@@ -11,8 +11,9 @@ import {
 } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUserEmail } from "@/lib/zustand";
 const primaryColor = "#184271";
 
 const projects = [
@@ -83,6 +84,22 @@ const projects = [
 
 export default function ProjectsList() {
     const router = useRouter();
+    const [projects, setProjects] = useState<any[]>([]);
+    let {userEmail} = useUserEmail();
+    useEffect(() => {
+        let getProjects = async () => {
+            let response = await fetch(`/api/projects?doctor=true&email=${userEmail?.email}`);
+            let data = await response.json();
+            setProjects(data.reverse());
+        }
+        getProjects();
+    }, []);
+    if(projects.length === 0){
+        return <div className="flex justify-center items-center h-screen">
+            <div className="text-2xl font-bold"> ❌ No projects found</div>
+        </div>;
+    }
+        
     return (
         <Box
             sx={{
@@ -92,7 +109,7 @@ export default function ProjectsList() {
             }}
         >
             <Stack spacing={2}>
-                {projects.map((project) => (
+                {projects.map((project: any) => (
                     <Card key={project.id} sx={{ borderRadius: 2, cursor: "pointer" }} onClick={() => router.push(`/doctor/graduation-project/${project.id}`)}>
                         <CardContent
                             sx={{
@@ -122,7 +139,7 @@ export default function ProjectsList() {
 
                             {/* Members */}
                             <Box display="flex" alignItems="center" gap={1} flexWrap="wrap">
-                                {project.members.map((member, idx) => (
+                                {project.members?.map((member: any, idx: any) => (
                                     <Box
                                         key={idx}
                                         display="flex"
@@ -131,7 +148,7 @@ export default function ProjectsList() {
                                         mr={1}
                                     >
                                         <Avatar
-                                            src={member.avatar}
+                                            src={member.image}
                                             alt={member.name}
                                             sx={{ width: 24, height: 24 }}
                                         />

@@ -10,583 +10,43 @@ import {
     Typography,
 } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import Image from "next/image";
-import React from "react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 const primaryColor = "#184271";
 
-const projects = [
-    {
-        id: 1,
-        icon: "🏦", // put your icons in /public/icons/
-        title: "Bank system",
-        description:
-            "A banking system for secure and easy account and transaction management.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 2,
-        icon: "🏋️‍♂️",
-        title: "Gym system",
-        description:
-            "A system for managing gym operations, including member registrations.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 3,
-        icon: "🏃‍♂️",
-        title: "Health Pal",
-        description:
-            "A health app that tracks activities, diet, sleep, and exercise.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 4,
-        icon: "🏦", // put your icons in /public/icons/
-        title: "Bank system",
-        description:
-            "A banking system for secure and easy account and transaction management.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 5,
-        icon: "🏋️‍♂️",
-        title: "Gym system",
-        description:
-            "A system for managing gym operations, including member registrations.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 6,
-        icon: "🏃‍♂️",
-        title: "Health Pal",
-        description:
-            "A health app that tracks activities, diet, sleep, and exercise.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 7,
-        icon: "🏦", // put your icons in /public/icons/
-        title: "Bank system",
-        description:
-            "A banking system for secure and easy account and transaction management.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 8,
-        icon: "🏋️‍♂️",
-        title: "Gym system",
-        description:
-            "A system for managing gym operations, including member registrations.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 9,
-        icon: "🏃‍♂️",
-        title: "Health Pal",
-        description:
-            "A health app that tracks activities, diet, sleep, and exercise.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 11,
-        icon: "🏦", // put your icons in /public/icons/
-        title: "Bank system",
-        description:
-            "A banking system for secure and easy account and transaction management.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 12,
-        icon: "🏋️‍♂️",
-        title: "Gym system",
-        description:
-            "A system for managing gym operations, including member registrations.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 13,
-        icon: "🏃‍♂️",
-        title: "Health Pal",
-        description:
-            "A health app that tracks activities, diet, sleep, and exercise.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 14,
-        icon: "🏦", // put your icons in /public/icons/
-        title: "Bank system",
-        description:
-            "A banking system for secure and easy account and transaction management.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 15,
-        icon: "🏋️‍♂️",
-        title: "Gym system",
-        description:
-            "A system for managing gym operations, including member registrations.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 16,
-        icon: "🏃‍♂️",
-        title: "Health Pal",
-        description:
-            "A health app that tracks activities, diet, sleep, and exercise.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 17,
-        icon: "🏦", // put your icons in /public/icons/
-        title: "Bank system",
-        description:
-            "A banking system for secure and easy account and transaction management.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 18,
-        icon: "🏋️‍♂️",
-        title: "Gym system",
-        description:
-            "A system for managing gym operations, including member registrations.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 19,
-        icon: "🏃‍♂️",
-        title: "Health Pal",
-        description:
-            "A health app that tracks activities, diet, sleep, and exercise.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 20,
-        icon: "🏦", // put your icons in /public/icons/
-        title: "Bank system",
-        description:
-            "A banking system for secure and easy account and transaction management.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 21,
-        icon: "🏋️‍♂️",
-        title: "Gym system",
-        description:
-            "A system for managing gym operations, including member registrations.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 22,
-        icon: "🏃‍♂️",
-        title: "Health Pal",
-        description:
-            "A health app that tracks activities, diet, sleep, and exercise.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 23,
-        icon: "🏦", // put your icons in /public/icons/
-        title: "Bank system",
-        description:
-            "A banking system for secure and easy account and transaction management.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 24,
-        icon: "🏋️‍♂️",
-        title: "Gym system",
-        description:
-            "A system for managing gym operations, including member registrations.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 25,
-        icon: "🏃‍♂️",
-        title: "Health Pal",
-        description:
-            "A health app that tracks activities, diet, sleep, and exercise.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 26,
-        icon: "🏦", // put your icons in /public/icons/
-        title: "Bank system",
-        description:
-            "A banking system for secure and easy account and transaction management.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 27,
-        icon: "🏋️‍♂️",
-        title: "Gym system",
-        description:
-            "A system for managing gym operations, including member registrations.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 28,
-        icon: "🏃‍♂️",
-        title: "Health Pal",
-        description:
-            "A health app that tracks activities, diet, sleep, and exercise.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-];
+interface Project {
+    id: number;
+    icon: string;
+    title: string;
+    projectDescription: string;
+    members: {
+        id: string;
+        name: string;
+        image: string;
+        field: string;
+        role: string;
+    }[];
+}
 
 export default function ProjectsList() {
     const router = useRouter();
+    const [projects, setProjects] = useState<any[]>([]);
+
+    useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                const response = await axios.get("/api/projects");
+                setProjects(response.data.reverse());
+            } catch (error) {
+                console.error("Error fetching projects:", error);
+            }
+        };
+
+        fetchProjects();
+    }, []);
+
     return (
         <Box
             sx={{
@@ -596,8 +56,8 @@ export default function ProjectsList() {
             }}
         >
             <Stack spacing={2}>
-                {projects.map((project) => (
-                    <Card key={project.id} sx={{ borderRadius: 2, cursor: "pointer" }} onClick={() => router.push(`/doctor/graduation-project/${project.id}`)}>
+                {projects.map((project: any) => (
+                    <Card key={project.id} sx={{ borderRadius: 2, cursor: "pointer" }} onClick={() => router.push(`/admin/graduation-project/${project.id}`)}>
                         <CardContent
                             sx={{
                                 display: "flex",
@@ -619,14 +79,14 @@ export default function ProjectsList() {
                                         color="text.secondary"
                                         maxWidth="400px"
                                     >
-                                        {project.description}
+                                        {project.projectDescription}
                                     </Typography>
                                 </Box>
                             </Box>
 
                             {/* Members */}
                             <Box display="flex" alignItems="center" gap={1} flexWrap="wrap">
-                                {project.members.map((member, idx) => (
+                                {project.members?.map((member: any, idx: any) => (
                                     <Box
                                         key={idx}
                                         display="flex"
@@ -635,7 +95,7 @@ export default function ProjectsList() {
                                         mr={1}
                                     >
                                         <Avatar
-                                            src={member.avatar}
+                                            src={member.image}
                                             alt={member.name}
                                             sx={{ width: 24, height: 24 }}
                                         />

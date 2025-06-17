@@ -12,12 +12,13 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemText,
-    IconButton,
-
 } from "@mui/material";
-import { Assignment, People, Description, InsertDriveFile, Upload } from "@mui/icons-material";
+import { Description, InsertDriveFile, Upload } from "@mui/icons-material";
 import { Download } from "@mui/icons-material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams, useRouter } from "next/navigation";
 
 const theme = createTheme({
     palette: {
@@ -27,33 +28,58 @@ const theme = createTheme({
     },
 });
 
-export default function Home() {
-    const projectData = {
-        projectName: "Path2Grad Student tracking & graduation system",
-        projectDescription:
-            "Path2Grad is a comprehensive educational platform designed to support computer science students in their academic journey and personal growth.",
-        projectField: ["Web", "AI"],
-        teamMembers: [
-            { name: "Ayman Salim Reda", role: "Router" },
-            { name: "Rania Mohamed", role: "Front-end" },
-            { name: "Ayman Salim Reda", role: "Backend" },
-            { name: "Ayman Salim Reda", role: "Back-end" },
-        ],
-        supervisors: [
-            { name: "Dr. Ahmed Khalid Ali", role: "Supervisor" },
-            { name: "Eng. Rania Mohamed", role: "Co-Supervisor" },
-        ],
-        projectFiles: [
-            { name: "NUB_GP 2024-2025.xlsx", url: "#" },
-            { name: "GP-abstract.docx", url: "#" },
-            { name: "Project Concept and Plan Template.docx", url: "#" },
-            { name: "GP-Template.docx", url: "#" },
-        ],
-        projectRequirements: [
-            "Project 1st term requirements",
-            "Project 2nd term requirements",
-        ],
+interface Project {
+    id: number;
+    icon: string;
+    title: string;
+    projectName: string;
+    projectDescription: string;
+    projectField: string[];
+    teamSize: number;
+    members: {
+        id: string;
+        name: string;
+        image: string;
+        field: string;
+        role: string;
+    }[];
+    supervisor: {
+        id: string;
+        name: string;
+        image: string;
+        field: string;
+        role: string;
     };
+    projectFiles: { name: string; url: string }[];
+    projectRequirements: string[];
+}
+
+export default function ProjectDetails() {
+    const params = useParams();
+    const [project, setProject] = useState<any | null>(null);
+    const router = useRouter();
+    useEffect(() => {
+        const fetchProject = async () => {
+            try {
+                const response = await axios.get(`/api/projects`);
+                const projects = response.data;
+                const project = projects.find((p: any) => p.id === params.id);
+                if (project) {
+                    setProject(project);
+                }
+            } catch (error) {
+                console.error("Error fetching project:", error);
+            }
+        };
+
+        fetchProject();
+    }, [params.id]);
+
+    if (!project) {
+        return <div className="flex justify-center items-center h-screen">
+            <div className="text-2xl font-bold"> ❌ No project found</div>
+        </div>;
+    }
 
     const styles = {
         container: {
@@ -88,46 +114,45 @@ export default function Home() {
         <ThemeProvider theme={theme}>
             <Container maxWidth="lg">
                 <Grid container spacing={3}>
-                    {/* ... (rest of the code remains the same, except for the addition of icons below) */}
                     <Grid item xs={12} md={6}>
                         <Paper style={styles.paper}>
-                            <Typography variant="h6" style={styles.sectionTitle}>Bank system</Typography>
-                            <TextField label="Project Name" defaultValue={projectData.projectName} fullWidth margin="normal" />
+                            <Typography variant="h6" style={styles.sectionTitle}>{project.title}</Typography>
+                            <TextField label="Project Name" defaultValue={project.projectName} fullWidth margin="normal" />
                             <Typography variant="h6" style={styles.sectionTitle}>Brief About Project</Typography>
-                            <TextField label="Description" multiline rows={4} defaultValue={projectData.projectDescription} fullWidth margin="normal" />
+                            <TextField label="Description" multiline rows={4} defaultValue={project.projectDescription} fullWidth margin="normal" />
                             <Typography variant="h6" style={styles.sectionTitle}>Project Field</Typography>
                             <Box display="flex" gap={1}>
-                                {projectData.projectField.map((field) => (
+                                {project.projectField.map((field: any) => (
                                     <Button key={field} variant="outlined" color="primary" size="small">{field}</Button>
                                 ))}
                             </Box>
                             <Typography variant="h6" style={styles.sectionTitle}>Number of team members</Typography>
-                            <TextField type="number" defaultValue={4} fullWidth margin="normal" />
+                            <TextField type="number" defaultValue={project.teamSize} fullWidth margin="normal" />
                         </Paper>
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <Paper style={styles.paper}>
                             <Typography variant="h6" style={styles.sectionTitle}>Project members and supervisors</Typography>
                             <Typography variant="subtitle1">Supervisor</Typography>
-                            {projectData.supervisors.map((supervisor) => (
-                                <Box key={supervisor.name} style={styles.listItem}>
-                                    <Avatar alt={supervisor.name} src="/images/user1.jpg" />
-                                    <ListItemText primary={supervisor.name} secondary={supervisor.role} />
+                            {project.supervisor && (
+                                <Box key={project.supervisor.id} style={styles.listItem}>
+                                    <Avatar alt={project.supervisor.name} src={project.supervisor.image} />
+                                    <ListItemText primary={project.supervisor.name} secondary={project.supervisor.role} />
                                 </Box>
-                            ))}
-                            <Typography variant="subtitle1">Co-Supervisor</Typography>
-                            {projectData.supervisors.map((supervisor) => (
-                                <Box key={supervisor.name} style={styles.listItem}>
-                                    <Avatar alt={supervisor.name} src="/images/user1.jpg" />
-                                    <ListItemText primary={supervisor.name} secondary={supervisor.role} />
+                            )}
+                            {/* <Typography variant="subtitle1">Co-Supervisor</Typography>
+                            {project.supervisor && (
+                                <Box key={project.supervisor.id} style={styles.listItem}>
+                                    <Avatar alt={project.supervisor.name} src={project.supervisor.image} />
+                                    <ListItemText primary={project.supervisor.name} secondary={project.supervisor.role} />
                                 </Box>
-                            ))}
+                            )} */}
                             <Typography variant="subtitle1">Team Members</Typography>
                             <List>
-                                {projectData.teamMembers.map((member, index) => (
-                                    <ListItem key={index} style={styles.listItem}>
+                                {project.members?.map((member: any) => (
+                                    <ListItem key={member.id} style={styles.listItem}>
                                         <ListItemAvatar>
-                                            <Avatar alt={member.name} src="/images/user1.jpg" />
+                                            <Avatar alt={member.name} src={member.image} />
                                         </ListItemAvatar>
                                         <ListItemText primary={member.name} secondary={member.role} />
                                     </ListItem>
@@ -141,7 +166,7 @@ export default function Home() {
                                 <Description /> Project Requirements
                             </Typography>
                             <List>
-                                {projectData.projectRequirements.map((req) => (
+                                {project.projectRequirements.map((req: any) => (
                                     <ListItem key={req}>
                                         <ListItemText primary={req} />
                                     </ListItem>
@@ -163,7 +188,7 @@ export default function Home() {
                                 <InsertDriveFile /> Project Files
                             </Typography>
                             <List>
-                                {projectData.projectFiles.map((file) => (
+                                {project.projectFiles.map((file: any) => (
                                     <ListItem key={file.name} style={styles.fileItem}>
                                         <ListItemText primary={file.name} />
                                         <Button variant="outlined" color="primary" startIcon={<Download />}>Download</Button>
@@ -173,6 +198,25 @@ export default function Home() {
                         </Paper>
                     </Grid>
                 </Grid>
+                <div className="flex justify-center items-center my-4 gap-4">
+                    <Button variant="contained" color="primary" onClick={() => {
+                        fetch(`/api/projects/${params.id}`, {
+                            method: "PUT",
+                            body: JSON.stringify(project),
+                        });
+                        router.push("/admin/graduation-project");
+                    }}>
+                        Submit Project
+                    </Button>
+                    <Button variant="contained" color="error" onClick={() => {
+                        fetch(`/api/projects?id=${params.id}`, {
+                            method: "DELETE",
+                        });
+                        router.push("/admin/graduation-project");
+                    }}>
+                        Delete Project
+                    </Button>
+                </div>
             </Container>
         </ThemeProvider>
     );

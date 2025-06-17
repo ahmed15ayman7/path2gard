@@ -1,23 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FileIcon, DownloadIcon } from "@/components/icons";
 import ProjectTasks from "@/components/project/ProjectTasks";
+import { toast } from "react-toastify";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Project } from "next/dist/build/swc/types";
 
 interface ProjectFile {
   name: string;
   type: string;
 }
-
+export default function ProjectFilesPageWrapper() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProjectFilesPage  />
+    </Suspense>
+  );
+}
 const ProjectFilesPage = () => {
+  let searchParams = useSearchParams();
+  let id = searchParams.get("id");
+  let [project, setProject] = useState<any>();
   const [files, setFiles] = useState<ProjectFile[]>([
-    { name: "NUB_GP 2024-2025.xlsx", type: "xlsx" },
-    { name: "GP-abstract.docx", type: "docx" },
-    { name: "Project Concept and Plan Template.docx", type: "docx" },
-    { name: "GP-Template.docx", type: "docx" },
+    // { name: "NUB_GP 2024-2025.xlsx", type: "xlsx" },
+    // { name: "GP-abstract.docx", type: "docx" },
+    // { name: "Project Concept and Plan Template.docx", type: "docx" },
+    // { name: "GP-Template.docx", type: "docx" },
   ]);
-
+useEffect(() => {
+  let getProject = async () => {
+    let response = await fetch(`/api/projects?id=${id}`);
+    console.log(response);
+    let data = await response.json();
+    setProject(data[0]);
+  }
+  getProject();
+}, [project]);
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const uploadedFiles = event.target.files;
     if (uploadedFiles) {
@@ -27,6 +47,20 @@ const ProjectFilesPage = () => {
       }));
       setFiles((prev) => [...prev, ...newFiles]);
     }
+  };
+  // const { updateProject } = useProjectStore();
+  const router = useRouter();
+  const handleSubmit = async (project: any) => {
+    // console.log("Submit Project");
+    await fetch(`/api/projects`, {
+      method: "PUT",
+      body: JSON.stringify({...project, projectFiles: files.map((file) => ({
+        name: file.name,
+        url: file.name,
+      })), projectRequirements: files.map((file) => file.name),id}),
+    });
+    toast.success("Project submitted successfully");
+    router.push("/dashboard");
   };
 
   return (
@@ -122,9 +156,13 @@ const ProjectFilesPage = () => {
             </div>
           </div>
         </div>
+        <div className="bg-white rounded-lg shadow-lg p-6">
+            <Button variant="outline" className="w-full" onClick={() => handleSubmit(project!)}>
+              Submit Project
+            </Button>
+          </div>
       </div>
     </div>
   );
 };
 
-export default ProjectFilesPage;
