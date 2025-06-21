@@ -14,6 +14,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUserEmail } from "@/lib/zustand";
+import { doctorApi } from "@/lib/api";
 const primaryColor = "#184271";
 
 const projects = [
@@ -81,19 +82,32 @@ const projects = [
         ],
     },
 ];
-
+interface Project {
+    projectId: number;
+    projectName: string;
+    description: string;
+    students: {
+        studentId: number;
+        studentName: string;
+        pic: string | null;
+    }[];
+    teachingAssistants: {
+        teachingAssistanId: number;
+        teachingAssistanName: string;
+        teachingAssistantPic: string | null;
+    }[];
+}
 export default function ProjectsList() {
     const router = useRouter();
-    const [projects, setProjects] = useState<any[]>([]);
+    const [projects, setProjects] = useState<Project[]>([]);
     let {userEmail} = useUserEmail();
     useEffect(() => {
         let getProjects = async () => {
-            let response = await fetch(`/api/projects?doctor=true&email=${userEmail?.email}`);
-            let data = await response.json();
-            setProjects(data.reverse());
+            let response = await doctorApi.getProjects();
+            setProjects(response.reverse());
         }
         getProjects();
-    }, []);
+    }, [userEmail]);
     if(projects.length === 0){
         return <div className="flex justify-center items-center h-screen">
             <div className="text-2xl font-bold"> ❌ No projects found</div>
@@ -109,8 +123,8 @@ export default function ProjectsList() {
             }}
         >
             <Stack spacing={2}>
-                {projects.map((project: any) => (
-                    <Card key={project.id} sx={{ borderRadius: 2, cursor: "pointer" }} onClick={() => router.push(`/doctor/graduation-project/${project.id}`)}>
+                {projects.map((project) => (
+                    <Card key={project.projectId} sx={{ borderRadius: 2, cursor: "pointer" }} onClick={() => router.push(`/doctor/graduation-project/${project.projectId}`)}>
                         <CardContent
                             sx={{
                                 display: "flex",
@@ -122,24 +136,24 @@ export default function ProjectsList() {
                         >
                             {/* Icon and Info */}
                             <Box display="flex" alignItems="center" gap={2} flex={1}>
-                                <h2 className="text-4xl">{project.icon}</h2>
+                                {/* <h2 className="text-4xl">{project.icon}</h2> */}
                                 <Box>
                                     <Typography variant="h6" fontWeight="bold">
-                                        {project.title}
+                                        {project.projectName}
                                     </Typography>
                                     <Typography
                                         variant="body2"
                                         color="text.secondary"
                                         maxWidth="400px"
                                     >
-                                        {project.description}
+                                        {project.description || ""}
                                     </Typography>
                                 </Box>
                             </Box>
 
                             {/* Members */}
                             <Box display="flex" alignItems="center" gap={1} flexWrap="wrap">
-                                {project.members?.map((member: any, idx: any) => (
+                                {project.students?.map((member, idx) => (
                                     <Box
                                         key={idx}
                                         display="flex"
@@ -148,11 +162,11 @@ export default function ProjectsList() {
                                         mr={1}
                                     >
                                         <Avatar
-                                            src={member.image}
-                                            alt={member.name}
+                                                src={member.pic || "/images/user1.jpg"}
+                                            alt={member.studentName}
                                             sx={{ width: 24, height: 24 }}
                                         />
-                                        <Typography variant="caption">{member.name}</Typography>
+                                        <Typography variant="caption">{member.studentName}</Typography>
                                     </Box>
                                 ))}
                             </Box>

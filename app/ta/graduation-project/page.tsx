@@ -11,78 +11,37 @@ import {
 } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { projectAdminApi, taApi } from "@/lib/api";
 const primaryColor = "#184271";
 
-const projects = [
-    {
-        id: 1,
-        icon: "🏦", // put your icons in /public/icons/
-        title: "Bank system",
-        description:
-            "A banking system for secure and easy account and transaction management.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 2,
-        icon: "🏋️‍♂️",
-        title: "Gym system",
-        description:
-            "A system for managing gym operations, including member registrations.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-    {
-        id: 3,
-        icon: "🏃‍♂️",
-        title: "Health Pal",
-        description:
-            "A health app that tracks activities, diet, sleep, and exercise.",
-        members: [
-            {
-                name: "Ayman Salim Reda",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Rania Mohamed",
-                avatar: "/images/user1.jpg",
-            },
-            {
-                name: "Nagwa Ahmed",
-                avatar: "/images/user1.jpg",
-            },
-        ],
-    },
-];
+interface Project {
+    projectId: number;
+    projectName: string;
+    description: string;
+    students: {
+        studentId: number;
+        studentName: string;
+        pic: string;
+    }[];
+    "doctors": {
+        doctorId: number;
+        doctorName: string;
+        pic: string;
+    }[];
+}
 
 export default function ProjectsList() {
     const router = useRouter();
+    const [projects, setProjects] = useState<Project[]>([]);
+    useEffect(() => {
+        const fetchProjects = async () => {
+            const response = await taApi.getProjects();
+            setProjects(response);
+        }
+        fetchProjects();
+    }, []);
     return (
         <Box
             sx={{
@@ -93,7 +52,7 @@ export default function ProjectsList() {
         >
             <Stack spacing={2}>
                 {projects.map((project) => (
-                    <Card key={project.id} sx={{ borderRadius: 2, cursor: "pointer" }} onClick={() => router.push(`/doctor/graduation-project/${project.id}`)}>
+                    <Card key={project.projectId} sx={{ borderRadius: 2, cursor: "pointer" }} onClick={() => router.push(`/ta/graduation-project/${project.projectId}`)}>
                         <CardContent
                             sx={{
                                 display: "flex",
@@ -105,10 +64,10 @@ export default function ProjectsList() {
                         >
                             {/* Icon and Info */}
                             <Box display="flex" alignItems="center" gap={2} flex={1}>
-                                <h2 className="text-4xl">{project.icon}</h2>
+                                {/* <h2 className="text-4xl">{project.projectName}</h2> */}
                                 <Box>
                                     <Typography variant="h6" fontWeight="bold">
-                                        {project.title}
+                                        {project.projectName}
                                     </Typography>
                                     <Typography
                                         variant="body2"
@@ -122,7 +81,7 @@ export default function ProjectsList() {
 
                             {/* Members */}
                             <Box display="flex" alignItems="center" gap={1} flexWrap="wrap">
-                                {project.members.map((member, idx) => (
+                                {project.students.map((member, idx) => (
                                     <Box
                                         key={idx}
                                         display="flex"
@@ -131,11 +90,11 @@ export default function ProjectsList() {
                                         mr={1}
                                     >
                                         <Avatar
-                                            src={member.avatar}
-                                            alt={member.name}
+                                            src={member.pic||"/images/user1.jpg"}
+                                            alt={member.studentName}
                                             sx={{ width: 24, height: 24 }}
                                         />
-                                        <Typography variant="caption">{member.name}</Typography>
+                                        <Typography variant="caption">{member.studentName}</Typography>
                                     </Box>
                                 ))}
                             </Box>

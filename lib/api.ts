@@ -60,7 +60,8 @@ export const authApi = {
 };
 export const userApi = {
     getuserdata: async (role:string) => {
-        const url = `/api/${role}/Profile`;
+    
+        const url = `/api/${role=="Admin"?"ProjectAdmin":role}/Profile`;
         const response = await api.get(url);
         return response.data;
     }
@@ -173,6 +174,64 @@ export const Internship = {
         return response.data;
     }
 }
+export const downListApi = {
+    getProjectField: async () => {
+        const url = `/api/DownList/ProjectField`;
+        const response = await api.get(url);
+        return response.data;
+    },
+    getSupervisor: async () => {
+        const url = `/api/DownList/Supervisor`;
+        const response = await api.get(url);
+        return response.data;
+    },
+    getCoSupervisor: async () => {
+        const url = `/api/DownList/CoSupervisor`;
+        const response = await api.get(url);
+        return response.data;
+    }
 
+}
+export const projectAdminApi = {
+    getProjects: async () => {
+        const url = `/api/ProjectAdmin/Projects`;
+        const response = await api.get(url);
+        return response.data;
+    }
+}
+export const taApi = {
+    getProjects: async () => {
+        const url = `/api/TeachingAssistant/Projects`;
+        const response = await api.get(url);
+        return response.data;
+    },
+    getProject: async (projectId:string) => {
+        const url = `/api/TeachingAssistant/ProjectById/${projectId}`;
+        const response = await api.get(url);
+        return response.data;
+    }
+}
+export const doctorApi = {
+    getProjects: async () => {
+        const url = `/api/Doctor/Projects`;
+        const response = await api.get(url);
+        return response.data;
+    },
+    getProjectById: async (projectId:string) => {
+        const url = `/api/Doctor/ProjectById/${projectId}`;
+        const response = await api.get(url);
+        return response.data;
+    },
+    getProfile: async () => {
+        const url = `/api/Doctor/Profile`;
+        const response = await api.get(url);
+        return response.data;
+    },
+    getProjectFields: async () => {
+        const url = `/api/Doctor/ProjectFields`;
+        const response = await api.get(url);
+        return response.data;
+    }
+}
 
 export default api;

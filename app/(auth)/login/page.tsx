@@ -10,7 +10,7 @@ import { useUserStore, useUserEmail } from "@/lib/zustand";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { signIn } from "next-auth/react";
-type UserType = "Student" | "Doctor" | "TeachingAssistant" | "Admin";
+type UserType = "Student" | "Doctor" | "TeachingAssistant" | "ProjectAdmin";
 const schema = z.object({
   email: z.string().email("Invalid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
@@ -21,7 +21,7 @@ let Admins = [{ email: "admin1@path2grad.com", password: "admin123",name:'Admin 
 let Students = [{ email: "john.doe@student.edu", password: "student123",name:"John Doe" }, { email: "jane.smith@student.edu", password: "student456",name:"Jane Smith" }, { email: "robert.johnson@student.edu", password: "student789",name:"Robert Johnson" }, { email: "emily.davis@student.edu", password: "student012",name:"Emily Davis" }, { email: "michael.wilson@student.edu", password: "student345",name:"Michael Wilson" }, { email: "sarah.brown@student.edu", password: "student678",name:"Sarah Brown" }, { email: "david.taylor@student.edu", password: "student901",name:"David Taylor" }, { email: "jessica.anderson@student.edu", password: "student234",name:"Jessica Anderson" }, { email: "thomas.martinez@student.edu", password: "student567",name:"Thomas Martinez" }, { email: "lisa.robinson@student.edu", password: "student890",name:"Lisa Robinson" }, { email: "james.clark@student.edu",password: "student112",name:"James Clark" }, { email: "patricia.lewis@student.edu",password: "student113",name:"Patricia Lewis" }, { email: "christopher.lee@student.edu",password: "student114",name:"Christopher Lee" }, { email: "amanda.walker@student.edu",password: "student115",name:"Amanda Walker" }, { email: "matthew.hall@student.edu",password:"student116",name:"Matthew Hall"}]
 
 let Doctors = [{ email: "smith@university.edu", password: "smith123",name:"Dr. Smith" }, { email: "johnson@university.edu", password: "johnson123",name:"Dr. Johnson" }, { email: "williams@university.edu", password: "williams123",name:"Dr. Williams" }, { email: "brown@university.edu", password: "brown123",name:"Dr. Brown" }, { email: "davis@university.edu", password: "davis123",name:"Dr. Davis" }]
-
+let TeachingAssistant = [{ email: "davis@university.edu", password: "davis123",name:"Dr. Davis" }, { email: "williams@university.edu", password: "williams123",name:"Dr. Williams" }]
 export default function SignIn() {
   const [formData, setFormData] = useState({ email: "", password: "", role: "Student" });
   let { setUserType } = useUserStore();
@@ -80,6 +80,16 @@ export default function SignIn() {
               setUserType(role as UserType);
               toast.success(`Logged in as ${role}`);
               router.push("/admin/graduation-project");} else {
+                toast.error("الايميل او اسم الدور او الكلمة السرية غير صحيحة");
+              }
+            break;
+          case "TeachingAssistant":
+              if (response?.ok) {
+              setUserEmail({ email, name: (TeachingAssistant.find(ta => ta.email === email)?.name)||"john doe", role });
+              setUserType(role as UserType);
+              toast.success(`Logged in as ${role}`);
+              router.push("/ta/tracking");
+              } else {
                 toast.error("الايميل او اسم الدور او الكلمة السرية غير صحيحة");
               }
             break;

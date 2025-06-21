@@ -29,19 +29,23 @@ import { ChevronDown } from "@/components/icons";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { Search, Check, X } from "@/components/icons";
+import { downListApi } from "@/lib/api";
 // import { useProjectStore } from "@/lib/zustand";
 
 interface ProjectField {
-  id: string;
-  name: string;
+    fieldId: number;
+    fieldName: string;
+    projectFields: {
+        projectFieldId: number;
+        projectField: string;
+    }[];
 }
 
 interface Supervisor {
-  id: string;
-  image: string;
-  name: string;
-  field: string;
-  email: string;
+  supervisorId: number;
+  supervisorName: string;
+  pic: string;
+  specialization: string;
 }
 
 interface Member {
@@ -75,23 +79,42 @@ const CustomizeProject = () => {
   const [memberFields, setMemberFields] = useState<{ [key: number]: ProjectField[] }>({});
   const [openMemberFieldsPopover, setOpenMemberFieldsPopover] = useState<{ [key: number]: boolean }>({});
   const [memberFieldsSearchQuery, setMemberFieldsSearchQuery] = useState('');
+  const [supervisors, setSupervisors] = useState<Supervisor[]>([]);
+  const [coSupervisors, setCoSupervisors] = useState<Supervisor[]>([]);
 
   useEffect(() => {
     const fetchFields = async () => {
       try {
-        const response = await axios.get("/api/project-fields");
-        setFields(response.data.fields);
+        const response = await downListApi.getProjectField();
+        setFields(response);
       } catch (error) {
         console.error("Error fetching fields:", error);
       }
     };
-
+    const fetchSupervisors = async () => {
+      try {
+        const response = await downListApi.getSupervisor();
+        setSupervisors(response);
+      } catch (error) {
+        console.error("Error fetching supervisors:", error);
+      }
+    };
+    const fetchCoSupervisors = async () => {
+      try {
+        const response = await downListApi.getCoSupervisor();
+        setCoSupervisors(response);
+      } catch (error) {
+        console.error("Error fetching co-supervisors:", error);
+      }
+    };
     fetchFields();
+    fetchSupervisors();
+    fetchCoSupervisors();
   }, []);
 
   const filteredFields = fields.filter((field) => {
     if (!searchQuery) return true;
-    return field.name.toLowerCase().includes(searchQuery.toLowerCase().trim());
+    return field.fieldName.toLowerCase().includes(searchQuery.toLowerCase().trim());
   });
 
   const handleTeamSizeClick = (size: number) => {
@@ -100,7 +123,7 @@ const CustomizeProject = () => {
 
   const handleFieldSelect = (field: ProjectField) => {
     setSelectedFields((prev) => {
-      const exists = prev.some((f) => f.id === field.id);
+      const exists = prev.some((f) => f.fieldId === field.fieldId);
       if (!exists) {
         return [...prev, field];
       }
@@ -108,19 +131,19 @@ const CustomizeProject = () => {
     });
   };
 
-  const handleFieldRemove = (fieldId: string) => {
-    setSelectedFields((prev) => prev.filter((field) => field.id !== fieldId));
+  const handleFieldRemove = (fieldId: number) => {
+    setSelectedFields((prev) => prev.filter((field) => field.fieldId !== fieldId));
   };
 
   const toggleMemberField = (index: number, field: ProjectField) => {
     setMemberFields(prev => {
       const currentFields = prev[index] || [];
-      const isSelected = currentFields.some(f => f.id === field.id);
+      const isSelected = currentFields.some(f => f.fieldId === field.fieldId);
       
       if (isSelected) {
         return {
           ...prev,
-          [index]: currentFields.filter(f => f.id !== field.id)
+          [index]: currentFields.filter(f => f.fieldId !== field.fieldId)
         };
       } else {
         return {
@@ -131,32 +154,26 @@ const CustomizeProject = () => {
     });
   };
 
-  const removeMemberField = (index: number, fieldId: string) => {
+  const removeMemberField = (index: number, fieldId: number) => {
     setMemberFields(prev => ({
       ...prev,
-      [index]: (prev[index] || []).filter(field => field.id !== fieldId)
+      [index]: (prev[index] || []).filter(field => field.fieldId !== fieldId)
     }));
   };
 
   const filteredMemberFields = fields.filter(field =>
-    field.name.toLowerCase().includes(memberFieldsSearchQuery.toLowerCase())
+    field.fieldName.toLowerCase().includes(memberFieldsSearchQuery.toLowerCase())
   );
 
-  const supervisors = Doctors.map((doctor,index) => ({
-    id: doctor.email,
-    image: index%2==0?"/images/user1.jpg":"/images/user2.jpg",
-    name: doctor.name,
-    field: index==0?"AI":index==1?"Security":index==2?"Web":index==3?"Mobile":"AI",
-    role: "Doctor",
-    email: doctor.email,
-  }));
+
   const members = Students.map((student,index) => ({
     id: student.email,
     image: index%2==0?"/images/user1.jpg":"/images/user2.jpg",
     name: student.name,
       field: {
-        id: index==0?"1":index==1?"2":index==2?"3":index==3?"4":"1",
-        name: index==0?"AI":index==1?"Security":index==2?"Web":index==3?"Mobile":"AI",
+        fieldId: index==0?1:index==1?2:index==2?3:index==3?4:1,
+        fieldName: index==0?"AI":index==1?"Security":index==2?"Web":index==3?"Mobile":"AI",
+        projectFields: []
       },
       role: "Student",
   }));
@@ -178,21 +195,20 @@ const CustomizeProject = () => {
       projectName: projectName,
       projectDescription: projectBrief,
       specification: projectBrief,
-      projectField: selectedFields.map((field) => field.name),
+      projectField: selectedFields.map((field) => field.fieldName),
       teamSize: teamSize,
       members: selectedMembers.map((member) => ({
         id: member.id,
         name: member.name,
         image: member.image,
-        field: member.field?.name || "",
+        field: member.field?.fieldName || "",
         role: "Student",
       })),
       supervisor: [selectedSupervisor, selectedCoSupervisor].filter(Boolean).map((supervisor) => ({
-        id: supervisor?.id || "",
-        name: supervisor?.name || "",
-        image: supervisor?.image || "",
-        field: supervisor?.field || "",
-        email: supervisor?.email || "",
+        id: supervisor?.supervisorId || "",
+        name: supervisor?.supervisorName || "",
+        image: supervisor?.pic || "",
+        field: supervisor?.specialization || "",
         role: "Doctor" as const,
       }))[0],
       projectFiles: [],
@@ -288,22 +304,22 @@ const CustomizeProject = () => {
                       <CommandGroup>
                         {filteredFields.map((field) => {
                           const isSelected = selectedFields.some(
-                            (f) => f.id === field.id
+                            (f) => f.fieldId === field.fieldId
                           );
                           return (
                             <div
-                              key={field.id}
+                              key={field.fieldId}
                               className="px-2 py-1.5 hover:bg-gray-100 cursor-pointer"
                               onClick={() => {
                                 if (isSelected) {
-                                  handleFieldRemove(field.id);
+                                  handleFieldRemove(field.fieldId);
                                 } else {
                                   handleFieldSelect(field);
                                 }
                               }}
                             >
                               <div className="flex items-center justify-between">
-                                <span>{field.name}</span>
+                                <span>{field.fieldName}</span>
                                 {isSelected && (
                                   <svg
                                     className="w-4 h-4 text-[#0A2647]"
@@ -334,15 +350,15 @@ const CustomizeProject = () => {
             <div className="flex flex-wrap gap-2 mt-2">
               {selectedFields.map((field) => (
                 <Badge
-                  key={field.id}
+                  key={field.fieldId}
                   variant="secondary"
                   className="px-3 py-1 bg-[#0A2647] text-white flex items-center gap-1"
                 >
-                  {field.name}
+                      {field.fieldName}
                   <button
                     type="button"
                     className="hover:text-gray-200 focus:outline-none"
-                    onClick={() => handleFieldRemove(field.id)}
+                    onClick={() => handleFieldRemove(field.fieldId)}
                   >
                     <svg
                       className="w-3 h-3"
@@ -403,11 +419,11 @@ const CustomizeProject = () => {
                       <div className="flex items-center space-x-3">
                         <Avatar>
                           <AvatarImage
-                            src={selectedSupervisor.image}
-                            alt={selectedSupervisor.name}
+                            src={selectedSupervisor.pic}
+                            alt={selectedSupervisor.supervisorName}
                           />
                           <AvatarFallback>
-                            {selectedSupervisor.name
+                            {selectedSupervisor.supervisorName
                             .split(" ")
                             .map((n) => n[0])
                             .join("")}
@@ -415,13 +431,13 @@ const CustomizeProject = () => {
                       </Avatar>
                       <div>
                         <div className="font-medium text-[#0A2647] max-sm:text-sm">
-                          {selectedSupervisor.name}
+                          {selectedSupervisor.supervisorName}
                         </div>
                       </div>
                       </div>
                       <div className="flex items-center space-x-2">
                       <div className="text-sm text-gray-500 bg-gray-200 px-2 py-1 rounded-full max-sm:text-xs">
-                        {selectedSupervisor.field}
+                        {selectedSupervisor.specialization}
                       </div>
                       <div className="flex items-center space-x-2">
                         <button
@@ -447,14 +463,14 @@ const CustomizeProject = () => {
                 <div className="space-y-2">
                   {supervisors.map((supervisor) => (
                     <SupervisorOption
-                      key={supervisor.id}
+                      key={supervisor.supervisorId}
                       {...supervisor}
-                      isRequested={requestedSupervisors.includes(supervisor.id)}
+                      isRequested={requestedSupervisors.includes(supervisor.supervisorId.toString())}
                       onRequest={() => {
                         setSelectedSupervisor(supervisor);
                         setRequestedSupervisors((prev) => [
                           ...prev,
-                          supervisor.id,
+                          supervisor.supervisorId.toString(),
                         ]);
                       }}
                     />
@@ -478,11 +494,11 @@ const CustomizeProject = () => {
                       <div className="flex items-center space-x-3">
                         <Avatar>
                           <AvatarImage
-                            src={selectedCoSupervisor.image}
-                            alt={selectedCoSupervisor.name}
+                            src={selectedCoSupervisor.pic}
+                            alt={selectedCoSupervisor.supervisorName}
                           />
                           <AvatarFallback>
-                            {selectedCoSupervisor.name
+                            {selectedCoSupervisor.supervisorName
                               .split(" ")
                               .map((n) => n[0])
                               .join("")}
@@ -490,13 +506,13 @@ const CustomizeProject = () => {
                         </Avatar>
                         <div className="flex gap-5 items-center">
                           <div className="font-medium text-[#0A2647] max-sm:text-sm">
-                            {selectedCoSupervisor.name}
+                              {selectedCoSupervisor.supervisorName}
                           </div>
                         </div>
                       </div>
                       <div className="flex items-center space-x-3">
                         <div className="text-sm text-gray-500 bg-gray-200 px-2 py-1 rounded-full max-sm:text-xs">
-                          {selectedCoSupervisor.field}
+                          {selectedCoSupervisor.specialization}
                         </div>
                         <div className="flex items-center space-x-2">
                           <button
@@ -520,16 +536,16 @@ const CustomizeProject = () => {
               </PopoverTrigger>
               <PopoverContent className="w-full p-2" align="start">
                 <div className="space-y-2">
-                  {supervisors.map((supervisor) => (
+                  {coSupervisors.map((supervisor) => (
                     <SupervisorOption
-                      key={supervisor.id}
+                      key={supervisor.supervisorId}
                       {...supervisor}
-                      isRequested={requestedSupervisors.includes(supervisor.id)}
+                      isRequested={requestedSupervisors.includes(supervisor.supervisorId.toString())}
                       onRequest={() => {
                         setSelectedCoSupervisor(supervisor);
                         setRequestedSupervisors((prev) => [
                           ...prev,
-                          supervisor.id,
+                          supervisor.supervisorId.toString(),
                         ]);
                       }}
                     />
@@ -609,7 +625,7 @@ const CustomizeProject = () => {
                       >
                         {selectedMembers[index]?.field ? (
                           <Badge variant="secondary" className="bg-[#0A2647] text-white">
-                            {selectedMembers[index].field.name}
+                              {selectedMembers[index].field.fieldName}
                           </Badge>
                         ) : (
                           <svg
@@ -642,10 +658,10 @@ const CustomizeProject = () => {
                           )}
                           <CommandGroup>
                             {filteredFields.map((field) => {
-                              const isSelected = selectedMembers[index]?.field?.id === field.id;
+                              const isSelected = selectedMembers[index]?.field?.fieldId === field.fieldId;
                               return (
                                 <div
-                                  key={field.id}
+                                  key={field.fieldId}
                                   className="px-2 py-1.5 hover:bg-gray-100 cursor-pointer"
                                   onClick={() => {
                                     setSelectedMembers(prev => {
@@ -667,7 +683,7 @@ const CustomizeProject = () => {
                                   }}
                                 >
                                   <div className="flex items-center justify-between">
-                                    <span>{field.name}</span>
+                                      <span>{field.fieldName}</span>
                                     {isSelected && (
                                       <svg
                                         className="w-4 h-4 text-[#0A2647]"
@@ -719,26 +735,26 @@ interface SupervisorOptionProps extends Supervisor {
 }
 
 const SupervisorOption = ({
-  image,
-  name,
-  field,
+  pic,
+  supervisorName,
+  specialization,
   isRequested,
   onRequest,
 }: SupervisorOptionProps) => (
   <div className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-md cursor-pointer max-sm:min-w-[250px] min-w-[555px]">
     <div className="flex items-center space-x-3">
       <Avatar>
-        <AvatarImage src={image} alt={name} />
+        <AvatarImage src={pic} alt={supervisorName} />
         <AvatarFallback>
-          {name
+          {supervisorName
             .split(" ")
             .map((n) => n[0])
             .join("")}
         </AvatarFallback>
       </Avatar>
       <div>
-        <div className="font-medium text-[#0A2647] max-sm:text-sm">{name}</div>
-        <div className="text-sm text-gray-500 max-sm:text-xs">{field}</div>
+        <div className="font-medium text-[#0A2647] max-sm:text-sm">{supervisorName}</div>
+        <div className="text-sm text-gray-500 max-sm:text-xs">{specialization}</div>
       </div>
     </div>
     <div className="flex items-center space-x-2">

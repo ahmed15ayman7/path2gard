@@ -13,32 +13,34 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { projectAdminApi } from "@/lib/api";
 
 const primaryColor = "#184271";
 
 interface Project {
-    id: number;
-    icon: string;
-    title: string;
-    projectDescription: string;
-    members: {
-        id: string;
-        name: string;
-        image: string;
-        field: string;
-        role: string;
-    }[];
+    projectId: number;
+    projectName: string;
+    description: string;
+    students: {
+        studentId: number;
+        studentName: string;
+        pic: string;
+        }[]
+    supervisors: {
+        supervisorId: number;
+        supervisorName: string;
+        pic: string;
+        }[]
 }
-
 export default function ProjectsList() {
     const router = useRouter();
-    const [projects, setProjects] = useState<any[]>([]);
+    const [projects, setProjects] = useState<Project[]>([]);
 
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const response = await axios.get("/api/projects");
-                setProjects(response.data.reverse());
+                const response = await projectAdminApi.getProjects();
+                setProjects(response.reverse());
             } catch (error) {
                 console.error("Error fetching projects:", error);
             }
@@ -56,8 +58,8 @@ export default function ProjectsList() {
             }}
         >
             <Stack spacing={2}>
-                {projects.map((project: any) => (
-                    <Card key={project.id} sx={{ borderRadius: 2, cursor: "pointer" }} onClick={() => router.push(`/admin/graduation-project/${project.id}`)}>
+                {projects.map((project: Project) => (
+                    <Card key={project.projectId} sx={{ borderRadius: 2, cursor: "pointer" }} onClick={() => router.push(`/admin/graduation-project/${project.projectId}`)}>
                         <CardContent
                             sx={{
                                 display: "flex",
@@ -69,24 +71,24 @@ export default function ProjectsList() {
                         >
                             {/* Icon and Info */}
                             <Box display="flex" alignItems="center" gap={2} flex={1}>
-                                <h2 className="text-4xl">{project.icon}</h2>
+                                {/* <h2 className="text-4xl">{project.projectName}</h2> */}
                                 <Box>
                                     <Typography variant="h6" fontWeight="bold">
-                                        {project.title}
+                                        {project.projectName}
                                     </Typography>
                                     <Typography
                                         variant="body2"
                                         color="text.secondary"
                                         maxWidth="400px"
                                     >
-                                        {project.projectDescription}
+                                        {project.description}
                                     </Typography>
                                 </Box>
                             </Box>
 
                             {/* Members */}
                             <Box display="flex" alignItems="center" gap={1} flexWrap="wrap">
-                                {project.members?.map((member: any, idx: any) => (
+                                {project.students?.map((member: any, idx: any) => (
                                     <Box
                                         key={idx}
                                         display="flex"
@@ -95,8 +97,8 @@ export default function ProjectsList() {
                                         mr={1}
                                     >
                                         <Avatar
-                                            src={member.image}
-                                            alt={member.name}
+                                            src={member.pic||"/images/user1.jpg"}
+                                            alt={member.studentName}
                                             sx={{ width: 24, height: 24 }}
                                         />
                                         <Typography variant="caption">{member.name}</Typography>
