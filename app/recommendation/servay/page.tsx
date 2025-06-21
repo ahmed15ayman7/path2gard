@@ -174,7 +174,7 @@ const Index = () => {
           >
             <Image src={data.logo} alt={type} width={80} height={80} />
             <Typography variant="h6" align="center" sx={{ mt: 1 }}>
-              {type}
+              {data.title}
             </Typography>
           </Paper>
         </Grid>
