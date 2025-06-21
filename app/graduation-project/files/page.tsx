@@ -7,6 +7,7 @@ import ProjectTasks from "@/components/project/ProjectTasks";
 import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Project } from "next/dist/build/swc/types";
+import { projectApi } from "@/lib/api";
 
 interface ProjectFile {
   name: string;
@@ -52,15 +53,26 @@ useEffect(() => {
   const router = useRouter();
   const handleSubmit = async (project: any) => {
     // console.log("Submit Project");
-    await fetch(`/api/projects`, {
-      method: "PUT",
-      body: JSON.stringify({...project, projectFiles: files.map((file) => ({
-        name: file.name,
-        url: file.name,
-      })), projectRequirements: files.map((file) => file.name),id}),
-    });
-    toast.success("Project submitted successfully");
-    router.push("/dashboard");
+    let response=await projectApi.customizeProject({
+      projectName: project.projectName,
+      description: project.description,
+      fields: project.fields,
+      numberOfTeam: project.numberOfTeam,
+    })
+    console.log(response)
+    // await fetch(`/api/projects`, {
+    //   method: "PUT",
+    //   body: JSON.stringify({...project, projectFiles: files.map((file) => ({
+    //     name: file.name,
+    //     url: file.name,
+    //   })), projectRequirements: files.map((file) => file.name),id}),
+    // });
+    if(response){
+      toast.success("Project submitted successfully");
+      router.push("/dashboard");
+    }else{
+      toast.error("Project submitted failed");
+    }
   };
 
   return (

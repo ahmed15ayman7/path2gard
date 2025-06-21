@@ -103,5 +103,27 @@ export const trackApi = {
         return response.data;
     }
 }
+export const projectApi = {
+    getProjects: async () => {
+        const url = `/api/Project/ProjectBank`;
+        const response = await api.get(url);
+        return response.data;
+    },
+    customizeProject: async (project:{
+        "projectName": string,
+        "description": string,
+        "fields": [
+          {
+            "fieldName": string
+          }
+        ],
+        "numberOfTeam": number
+      }) => {
+        const url = `/api/Project/CustomizeProject`;
+        const response = await api.post(url,project);
+        return response.data;
+    }
+}
+
 
 export default api;
