@@ -1,24 +1,30 @@
 {
   "fields": [
     {
-      "id": "ai",
-      "name": "AI"
+      "id": "smart-attendance-system",
+      "name": "Smart Attendance System",
+      "description": "A system that uses facial recognition to track student attendance"
     },
     {
-      "id": "security",
-      "name": "Security"
+      "id": "e-learning-platform",
+      "name": "E-Learning Platform",
+      "description": "A comprehensive online learning management system"
     },
     {
-      "id": "web-mobile",
-      "name": "Web & Mobile Development"
+      "id": "cybersecurity-dashboard",
+      "name": "Cybersecurity Dashboard",
+      "description": "A dashboard for monitoring network security threats"
     },
     {
-      "id": "iot",
-      "name": "Internet of things(IOT)"
+      "id": "health-monitoring-app",
+      "name": "Health Monitoring App",
+      "description": "Mobile app for tracking health metrics"
     },
     {
-      "id": "software-engineering",
-      "name": "Software Engineering"
+      "id": "smart-city-iot-platform",
+      "name": "Smart City IoT Platform",
+      "description": "Platform for managing IoT devices in smart cities"
     }
   ]
+  
 }

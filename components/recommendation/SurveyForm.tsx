@@ -5,66 +5,125 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useRouter } from "next/navigation";
-
+import { surveyApi } from "@/lib/api";
+import { toast } from "react-toastify";
 const questions = [
   {
     id: 1,
-    question: "What do you enjoy working on the most?",
+    question: "Which of the following fields interests you the most?",
     options: [
-      "Building visually appealing and interactive user interfaces",
-      "Creating and managing databases and server-side logic",
-      "Developing mobile apps for Android and iOS",
-      "Analyzing data and creating intelligent systems",
+      "Artificial Intelligence",
+      "Data Science",
+      "Software Development",
+      "Web Development",
+      "Cybersecurity",
+      "Other (please specify)",
     ],
   },
   {
     id: 2,
-    question: "What excites you about solving problems?",
+    question: "How comfortable are you with programming using Python?",
     options: [
-      "Making websites/apps more user-friendly",
-      "Optimizing systems for better performance and scalability",
-      "Developing mobile apps for Android and iOS",
-      "Teaching machines to make smart decisions",
+      "Excellent",
+      "Good",
+      "Average",
+      "Weak",
+      "I don't know it",
     ],
   },
   {
     id: 3,
-    question: "What tools/technologies do you want to work with?",
+    question: "What is your level of experience with databases (SQL)?",
     options: [
-      "HTML, CSS, JavaScript, React, or Angular",
-      "Databases, APIs, and backend frameworks like Node.js or Django",
-      "Dart and Flutter for cross-platform mobile development",
-      "Python, TensorFlow, or other AI/ML tools",
+      "Excellent",
+      "Good",
+      "Average",
+      "Weak",
+      "I don't know it",
     ],
   },
   {
     id: 4,
-    question: "What type of projects interest you the most?",
+    question: "Do you prefer working on user-facing projects (Front-end) or behind the scenes (Back-end)?",
     options: [
-      "Designing websites or apps that people love to use",
-      "Creating and managing databases and server-side logic",
-      "Developing mobile apps for Android and iOS",
-      "Analyzing data and creating intelligent systems",
+      "Front-end",
+      "Back-end",
+      "Both",
+      "Not sure",
     ],
   },
   {
     id: 5,
-    question: "How do you prefer to work?",
+    question: "Do you enjoy analyzing data and drawing insights from it?",
     options: [
-      "Designing creative and aesthetic solutions",
-      "Solving technical problems in the background",
-      "Developing mobile apps for Android and iOS",
-      "Analyzing data and creating intelligent systems",
+      "Yes",
+      "No",
+      "To some extent",
+    ],
+  },
+  {
+    id: 6,
+    question: "Are you passionate about protecting systems and networks from cyber attacks?",
+    options: [
+      "Yes",
+      "No",
+      "To some extent",
+    ],
+  },
+  {
+    id: 7,
+    question: "How strong are your logical thinking and problem-solving skills?",
+    options: [
+      "Very strong",
+      "Good",
+      "Average",
+      "Weak",
+    ],
+  },
+  {
+    id: 8,
+    question: "Have you ever worked on a programming project, either individually or in a team?",
+    options: [
+      "Yes",
+      "No",
+      "Currently working on one",
+    ],
+  },
+  {
+    id: 9,
+    question: "Do you enjoy working with tools like Excel, Power BI, or Python for data analysis?",
+    options: [
+      "Yes",
+      "No",
+      "Haven’t tried",
+    ],
+  },
+  {
+    id: 10,
+    question: "What type of project would you like to work on for your graduation project?",
+    options: [
+      "Web application",
+      "Data analysis",
+      "Desktop application",
+      "Network security system",
+      "AI-based application",
+      "Other",
     ],
   },
 ];
 
+
 export default function SurveyForm({ onClose }: { onClose: () => void }) {
   const [answers, setAnswers] = useState<{ [key: number]: string }>({});
   const router = useRouter();
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const data = await surveyApi.postSurvey(answers);
+    if(data){
+      toast.success("Survey submitted successfully");
+      console.log(data);
+      router.push(`/recommendation/servay?type=${data}`);
+    }
     // Here you can analyze the answers and recommend a track
-    router.push("/recommendation/servay");
     console.log(answers);
     onClose();
   };

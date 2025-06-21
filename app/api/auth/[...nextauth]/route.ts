@@ -1,3 +1,4 @@
+import { authApi } from '@/lib/api';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
@@ -13,18 +14,17 @@ const handler = NextAuth({
             },
             async authorize(credentials) {
                 try {
-                    // const response = await axios.post("http://elgazery.runasp.net/api/Account/login", {
-                    //     email: credentials?.email || '',
-                    //     password: credentials?.password || '',
-                    //     role: credentials?.role || '',
-                    // });
-                    // const { token } = response.data;
-                    
+                    console.log(credentials);
 
+                    const response = await authApi.login(credentials!); 
+                    const  token  = response;
+                    
+                    console.log(response);
 
                     return {
                         id: '1',
                         ...credentials,
+                        token: token,
                     };
                 } catch (error) {
                     console.log(error);

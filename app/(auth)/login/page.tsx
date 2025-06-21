@@ -42,18 +42,16 @@ export default function SignIn() {
     }
 
     try {
-  
-
+      const response = await signIn("credentials", {
+        email,
+        password,
+        name:email.split("@")[0],
+        role,
+        redirect: false,
+      });
         switch (role) {
           case "Student":
-            if (Students.some(student => student.email === email && student.password === password)) {
-              const response = await signIn("credentials", {
-                email,
-                password,
-                name:role === "Student" ? Students.find(student => student.email === email)?.name : role === "Doctor" ? Doctors.find(doctor => doctor.email === email)?.name : role === "Assistant" ? Doctors.find(assistant => assistant.email === email)?.name : Admins.find(admin => admin.email === email)?.name,
-                role,
-                redirect: false,
-              });
+             
               if (response?.ok) {
               setUserEmail({ email, name: (Students.find(student => student.email === email)?.name)||"john doe", role });
               setUserType(role as UserType);
@@ -62,19 +60,10 @@ export default function SignIn() {
               } else {
                 toast.error("الايميل او اسم الدور او الكلمة السرية غير صحيحة");
               }
-            } else {
-              toast.error("الايميل او اسم الدور او الكلمة السرية غير صحيحة");
-            }
+
             break;
           case "Doctor":
-            if (Doctors.some(doctor => doctor.email === email && doctor.password === password)) {
-              const response = await signIn("credentials", {
-                email,
-                password,
-                name:Doctors.find(doctor => doctor.email === email)?.name,
-                role,
-                redirect: false,
-              });
+             
               if (response?.ok) {
               setUserEmail({ email, name: (Doctors.find(doctor => doctor.email === email)?.name)||"john doe", role });
               setUserType(role as UserType);
@@ -83,19 +72,9 @@ export default function SignIn() {
               } else {
                 toast.error("الايميل او اسم الدور او الكلمة السرية غير صحيحة");
               }
-            } else {
-              toast.error("الايميل او اسم الدور او الكلمة السرية غير صحيحة");
-            }
             break;
           case "Admin":
-            if (Admins.some(admin => admin.email === email && admin.password === password)) {
-              const response = await signIn("credentials", {
-                email,
-                password,
-                name:Admins.find(admin => admin.email === email)?.name,
-                role,
-                redirect: false,
-              });
+              
               if (response?.ok) {
               setUserEmail({ email, name: (Admins.find(admin => admin.email === email)?.name)||"john doe", role });
               setUserType(role as UserType);
@@ -103,9 +82,6 @@ export default function SignIn() {
               router.push("/admin/graduation-project");} else {
                 toast.error("الايميل او اسم الدور او الكلمة السرية غير صحيحة");
               }
-            } else {
-              toast.error("الايميل او اسم الدور او الكلمة السرية غير صحيحة");
-            }
             break;
           default:
             toast.error("الايميل او اسم الدور او الكلمة السرية غير صحيحة");
