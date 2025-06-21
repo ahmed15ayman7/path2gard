@@ -10,11 +10,11 @@ import { useUserStore, useUserEmail } from "@/lib/zustand";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { signIn } from "next-auth/react";
-type UserType = "Student" | "Doctor" | "Assistant" | "Admin";
+type UserType = "Student" | "Doctor" | "TeachingAssistant" | "Admin";
 const schema = z.object({
   email: z.string().email("Invalid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  role: z.enum(["Student", "Doctor", "Assistant", "Admin"]),
+  role: z.enum(["Student", "Doctor", "TeachingAssistant", "Admin"]),
 });
 let Admins = [{ email: "admin1@path2grad.com", password: "admin123",name:'Admin One' }, { email: "admin2@path2grad.com", password: "admin456",name:"Admin Two" }, { email: "admin3@path2grad.com", password: "admin789",name:"Admin Three" }];
 
@@ -119,7 +119,7 @@ export default function SignIn() {
             <RadioGroup name="role" value={formData.role} onChange={handleChange} className="flex flex-col">
               <FormControlLabel value="Student" control={<Radio />} label="Student" />
               <FormControlLabel value="Doctor" control={<Radio />} label="Doctor" />
-              <FormControlLabel value="Assistant" control={<Radio />} label="Teaching Assistant" />
+              <FormControlLabel value="TeachingAssistant" control={<Radio />} label="Teaching Assistant" />
               <FormControlLabel value="Admin" control={<Radio />} label="Projects Admin" />
             </RadioGroup>
             <Button type="submit" variant="contained" fullWidth className="bg-[#0A2844] text-white">Sign In</Button>

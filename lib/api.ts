@@ -109,6 +109,16 @@ export const projectApi = {
         const response = await api.get(url);
         return response.data;
     },
+    getProjectsById: async (projectId:string) => {
+        const url = `/api/Project/ProjectBank/${projectId}`;
+        const response = await api.get(url);
+        return response.data;
+    },
+    getProjectData: async () => {
+        const url = `/api/Student/Project`;
+        const response = await api.get(url);
+        return response.data;
+    },
     customizeProject: async (project:{
         "projectName": string,
         "description": string,
@@ -121,6 +131,45 @@ export const projectApi = {
       }) => {
         const url = `/api/Project/CustomizeProject`;
         const response = await api.post(url,project);
+        return response.data;
+    }
+}
+export const Internship = {
+    getInternship: async () => {
+        const url = `/api/Internship/Internship`;
+        const response = await api.get(url);
+        return response.data;
+    },
+    getUploadCertificates: async () => {
+        const url = `/api/Internship/UploadCertificates`;
+        const response = await api.get(url);
+        return response.data;
+    },
+    uploadCertificates: async (certificate:File) => {
+        const url = `/api/Internship/UploadCertificates`;
+        const formData = new FormData();
+        formData.append('file', certificate);
+        const response = await api.post(url,formData,{
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response.data;
+    },
+    getWorkFiles: async () => {
+        const url = `/api/Internship/WorkFiles`;
+        const response = await api.get(url);
+        return response.data;
+    },
+    uploadWorkFiles: async (workFile:File) => {
+        const url = `/api/Internship/WorkFiles`;
+        const formData = new FormData();
+        formData.append('file', workFile);
+        const response = await api.post(url,formData,{
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
         return response.data;
     }
 }

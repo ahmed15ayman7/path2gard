@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Select,
   SelectContent,
@@ -57,8 +57,11 @@ let Doctors = [{ email: "smith@university.edu", password: "smith123",name:"Dr. S
 
 const CustomizeProject = () => {
   const router = useRouter();
-  const [projectName, setProjectName] = useState("");
-  const [projectBrief, setProjectBrief] = useState("");
+  const searchParams = useSearchParams();
+  const projectNameInitial = searchParams.get("projectName");
+  const projectDescriptionInitial = searchParams.get("projectDescription");
+  const [projectName, setProjectName] = useState(projectNameInitial || "");
+  const [projectBrief, setProjectBrief] = useState(projectDescriptionInitial || "");
   const [selectedFields, setSelectedFields] = useState<ProjectField[]>([]);
   const [teamSize, setTeamSize] = useState(4);
   const [fields, setFields] = useState<ProjectField[]>([]);
