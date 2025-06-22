@@ -117,43 +117,70 @@ const ProjectSelection = () => {
 
   // Render project data if exists
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-6">Your Project Data</h1>
-
-      {projectData.projectRequirements.length > 0 && (
-        <div className="bg-white p-4 rounded-lg shadow mb-4">
-          <h2 className="text-xl font-semibold mb-2">Project Requirements</h2>
-          <ul className="list-disc pl-5 space-y-1">
-            {projectData.projectRequirements.map((req, idx) => (
-              <li key={idx}>{req}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {projectData.projectFiles.length > 0 && (
-        <div className="bg-white p-4 rounded-lg shadow mb-4">
-          <h2 className="text-xl font-semibold mb-2">Project Files</h2>
-          <ul className="list-disc pl-5 space-y-1">
-            {projectData.projectFiles.map((file, idx) => (
-              <li key={idx}>{file}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {projectData.projectTasks.length > 0 && (
-        <div className="bg-white p-4 rounded-lg shadow mb-4">
-          <h2 className="text-xl font-semibold mb-2">Project Tasks</h2>
-          <ul className="list-disc pl-5 space-y-1">
-            {projectData.projectTasks.map((task, idx) => (
-              <li key={idx}>{task}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+    <div className="container mx-auto py-10 px-4">
+      <h1 className="text-4xl font-bold mb-8 text-center text-[#0A2647]">Your Project Data</h1>
+  
+      <div className="grid gap-6 lg:grid-cols-3">
+        {projectData.projectRequirements.length > 0 && (
+          <div className="bg-white rounded-2xl shadow-lg p-6 border-t-4 border-[#0A2647]">
+            <h2 className="text-2xl font-semibold text-[#0A2647] mb-4 flex items-center gap-2">
+              <svg className="w-6 h-6 text-[#0A2647]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 4H7a2 2 0 01-2-2V6a2 2 0 012-2h6l5 5v11a2 2 0 01-2 2z" />
+              </svg>
+              Project Requirements
+            </h2>
+            <ul className="space-y-2">
+              {projectData.projectRequirements.map((req: any, idx: number) => (
+                <li key={idx} className="flex items-start gap-2">
+                  <span className="mt-1 w-2 h-2 bg-[#0A2647] rounded-full"></span>
+                  <span>{req.requirementName}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+  
+        {projectData.projectFiles.length > 0 && (
+          <div className="bg-white rounded-2xl shadow-lg p-6 border-t-4 border-green-600">
+            <h2 className="text-2xl font-semibold text-green-700 mb-4 flex items-center gap-2">
+              <svg className="w-6 h-6 text-green-700" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h3m10-2a2 2 0 002-2V7a2 2 0 00-2-2h-3M7 7h10M7 17h10M9 3v4m6-4v4" />
+              </svg>
+              Project Files
+            </h2>
+            <ul className="space-y-2">
+              {projectData.projectFiles.map((file: any, idx: number) => (
+                <li key={idx} className="flex items-start gap-2">
+                  <span className="mt-1 w-2 h-2 bg-green-600 rounded-full"></span>
+                  <span>{file.fileName}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+  
+        {projectData.projectTasks.length > 0 && (
+          <div className="bg-white rounded-2xl shadow-lg p-6 border-t-4 border-yellow-500">
+            <h2 className="text-2xl font-semibold text-yellow-600 mb-4 flex items-center gap-2">
+              <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6M5 7h14M12 17v4m0 0H8m4 0h4" />
+              </svg>
+              Project Tasks
+            </h2>
+            <ul className="space-y-2">
+              {projectData.projectTasks.map((task: any, idx: number) => (
+                <li key={idx} className="flex items-start gap-2">
+                  <span className="mt-1 w-2 h-2 bg-yellow-500 rounded-full"></span>
+                  <span>{task.taskName}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
+  
 };
 
 export default ProjectSelection;

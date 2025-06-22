@@ -29,7 +29,8 @@ import { ChevronDown } from "@/components/icons";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { Search, Check, X } from "@/components/icons";
-import { downListApi } from "@/lib/api";
+import { downListApi, studentApi } from "@/lib/api";
+import { toast } from "react-toastify";
 // import { useProjectStore } from "@/lib/zustand";
 
 interface ProjectField {
@@ -267,7 +268,8 @@ const CustomizeProject = () => {
                         ? `${selectedFields.length} field${
                             selectedFields.length > 1 ? "s" : ""
                           } selected`
-                        : "Choose your project field"}
+                        : "Choose your project field"
+                        }
                     </span>
                     <svg
                       className="w-4 h-4"
@@ -467,6 +469,7 @@ const CustomizeProject = () => {
                       {...supervisor}
                       isRequested={requestedSupervisors.includes(supervisor.supervisorId.toString())}
                       onRequest={() => {
+                        studentApi.studentRequest(supervisor.supervisorId);
                         setSelectedSupervisor(supervisor);
                         setRequestedSupervisors((prev) => [
                           ...prev,
@@ -542,6 +545,7 @@ const CustomizeProject = () => {
                       {...supervisor}
                       isRequested={requestedSupervisors.includes(supervisor.supervisorId.toString())}
                       onRequest={() => {
+                        studentApi.studentRequest(supervisor.supervisorId);
                         setSelectedCoSupervisor(supervisor);
                         setRequestedSupervisors((prev) => [
                           ...prev,
@@ -589,19 +593,29 @@ const CustomizeProject = () => {
                             key={member.id}
                             {...member}
                             isRequested={requestedMembers.includes(member.id)}
-                            onRequest={() => {
+                            onRequest={async (e:any) => {
+                              e.preventDefault();
+                              let toastId = toast.loading("Requesting...");
+                              let response = await studentApi.studentRequest(Number(member.id));
+                              if(response){
+                                toast.update(toastId, { render: "Request sent successfully", type: "success", isLoading: false, autoClose: 3000 });
+                              
                               setSelectedMembers(prev => {
                                 const newMembers = [...prev];
                                 newMembers[index] = member;
                                 return newMembers;
                               });
-                              setRequestedMembers(prev => [...prev, member.id]);
+                                setRequestedMembers(prev => [...prev, member.id]);
                               // Open the fields popover after selecting the member
                               setOpenMemberFieldsPopover(prev => ({
                                 ...prev,
                                 [index]: true
                               }));
+                              
+                            }else{
+                              toast.update(toastId, { render: "Request failed", type: "error", isLoading: false, autoClose: 3000 });
                             }}
+                          }
                           />
                         ))}
                       </div>
@@ -731,7 +745,7 @@ const CustomizeProject = () => {
 
 interface SupervisorOptionProps extends Supervisor {
   isRequested?: boolean;
-  onRequest: () => void;
+  onRequest: (e:any) => void;
 }
 
 const SupervisorOption = ({
@@ -777,7 +791,7 @@ const SupervisorOption = ({
 
 interface MemberOptionProps extends Member {
   isRequested?: boolean;
-  onRequest: () => void;
+  onRequest: (e:any) => void;
 }
 
 const MemberOption = ({

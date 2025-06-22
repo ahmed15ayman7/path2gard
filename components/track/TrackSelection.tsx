@@ -1,19 +1,22 @@
 "use client";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import TrackContent from './TrackContent';
+import { trackApi } from '@/lib/api';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 interface Track {
-  id: string;
-  name: string;
+  trackId: string;
+  trackName: string;
 }
 
 // Example track data
 const tracks: Track[] = [
-  { id: 'ai', name: 'Artificial Intelligence' },
-  { id: 'frontend', name: 'Front-end' },
-  { id: 'backend', name: 'Back-end' },
+    { trackId: 'ai', trackName: 'Artificial Intelligence' },
+  { trackId: 'frontend', trackName: 'Front-end' },
+  { trackId: 'backend', trackName: 'Back-end' },
 ];
 
 interface Video {
@@ -97,10 +100,41 @@ const aiTrackContent: TrackContentProps = {
 const TrackSelection = () => {
   const [selectedTrack, setSelectedTrack] = useState<string | null>(null);
   const [showContent, setShowContent] = useState(false);
+  const [tracks, setTracks] = useState<Track[]>([]);
+  const router = useRouter();
+  useEffect(() => {
+    let getTracks = async () => {
+      let response = await trackApi.getAllTracks();
+      setTracks(response);
+    }
+    getTracks();
+  }, []); 
 
-  const handleSelect = () => {
+  const handleSelect = async () => {
     if (selectedTrack) {
-      setShowContent(true);
+      let resCurrentTrack = await trackApi.getTrack();
+      if(resCurrentTrack[0].trackName===tracks.find((track:any) => track.trackId === selectedTrack)?.trackName){
+        let toastId = toast.loading("Updating track...");
+        let response = await trackApi.updateTrackByTrackId(selectedTrack,tracks);
+        if(response){
+          toast.update(toastId, { render: "Track updated successfully", type: "success", isLoading: false, autoClose: 3000 });
+        }else{
+          toast.update(toastId, { render: "Track update failed", type: "error", isLoading: false, autoClose: 3000 });
+        }
+        return;
+      }else{
+        let toastId = toast.loading("Created track...");
+      // setShowContent(true);
+      let response = await trackApi.addTrack({
+        "trackName": tracks.find((track:any) => track.trackId === selectedTrack)?.trackName
+      });
+      if(response){
+        toast.update(toastId, { render: "Track created successfully", type: "success", isLoading: false, autoClose: 3000 });
+        router.push("/dashboard");
+      }else{
+        toast.update(toastId, { render: "Track created failed", type: "error", isLoading: false, autoClose: 3000 });
+      }
+      }
     }
   };
 
@@ -137,18 +171,18 @@ const TrackSelection = () => {
               <div className="space-y-4">
                 <h2 className="text-xl font-medium">Choose your track</h2>
                 <div className="space-y-4">
-                  {tracks.map((track) => (
+                  {tracks.map((track:any) => (
                     <div
-                      key={track.id}
+                      key={track.trackId}
                       className="flex items-center justify-between border-b border-gray-200 py-4 cursor-pointer"
-                      onClick={() => setSelectedTrack(track.id)}
+                      onClick={() => setSelectedTrack(track.trackId)}
                     >
-                      <span className="text-lg text-gray-700">{track.name}</span>
+                      <span className="text-lg text-gray-700">{track.trackName}</span>
                       <div 
                         className={`w-6 h-6 rounded-full border-2 border-[#0A2647] flex items-center justify-center
-                          ${selectedTrack === track.id ? 'bg-[#0A2647]' : 'bg-white'}`}
+                          ${selectedTrack === track.trackId ? 'bg-[#0A2647]' : 'bg-white'}`}
                       >
-                        {selectedTrack === track.id && (
+                        {selectedTrack === track.trackId && (
                           <div className="w-3 h-3 bg-white rounded-full" />
                         )}
                       </div>

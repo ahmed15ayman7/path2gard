@@ -1,5 +1,6 @@
 "use client";
 
+import { doctorApi, studentApi, teachingAssistantApi } from "@/lib/api";
 import {
     Avatar,
     Box,
@@ -9,7 +10,9 @@ import {
     Stack,
     Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useUserEmail } from '@/lib/zustand';
+import { toast } from "react-toastify";
 
 const primaryColor = "#184271";
 
@@ -42,15 +45,41 @@ const initialRequests: Request[] = [
 ];
 
 export default function GraduationRequests() {
-    const [requests, setRequests] = useState(initialRequests);
+    // const [requests, setRequests] = useState(initialRequests);
+    let {userEmail} = useUserEmail();
+    let [projectRequests, setProjectRequests] = useState([]);
+    useEffect(() => {
+        let getProjectRequests = async () => {
+            let response =userEmail?.role==="Doctor"?await doctorApi.getProjectRequest():userEmail?.role==="TeachingAssistant"?await teachingAssistantApi.getProjectRequest():await studentApi.getStudentRequest();
+            setProjectRequests(response);
+        }
+        getProjectRequests();
+    }, []);
 
-    const handleRemove = (id: number) => {
-        setRequests((prev) => prev.filter((req) => req.id !== id));
+    const handleRemove = async (id: number) => {
+        let toastId = toast.loading("Request removed...");
+        try{
+            let response = userEmail?.role==="Doctor"?await doctorApi.statusRequest(id,"Remove",0):userEmail?.role==="TeachingAssistant"?await teachingAssistantApi.statusRequest(id,"Remove",0):await studentApi.statusRequest(id,"Remove",0);
+            if(response.status===200){
+                toast.update(toastId, { render: "Request removed successfully", type: "success", isLoading: false, autoClose: 3000 });
+            }
+        }catch(error){
+            toast.update(toastId, { render: "Request failed", type: "error", isLoading: false, autoClose: 3000 });
+        }
     };
 
-    const handleAccept = (id: number) => {
-        alert(`Accepted project with ID ${id}`);
-        setRequests((prev) => prev.filter((req) => req.id !== id));
+    const handleAccept = async (id: number,projectId:number) => {
+        let toastId = toast.loading("Request accepted...");
+        try{
+        let response = userEmail?.role==="Doctor"?await doctorApi.statusRequest(id,"Accept",0):userEmail?.role==="TeachingAssistant"?await teachingAssistantApi.statusRequest(id,"Accept",projectId):await studentApi.statusRequest(id,"Accept",projectId);
+        if(response.status===200){
+            toast.update(toastId, { render: "Request accepted successfully", type: "success", isLoading: false, autoClose: 3000 });
+            }else{
+                toast.update(toastId, { render: "Request failed", type: "error", isLoading: false, autoClose: 3000 });
+            }
+        }catch(error){
+            toast.update(toastId, { render: "Request failed", type: "error", isLoading: false, autoClose: 3000 });
+        }
     };
 
     return (
@@ -66,8 +95,8 @@ export default function GraduationRequests() {
             </Typography>
 
             <Stack spacing={2}>
-                {requests.map((req) => (
-                    <Card key={req.id} sx={{ borderRadius: 2 }}>
+                {projectRequests.map((req:any,index:number) => (
+                    <Card key={index} sx={{ borderRadius: 2 }}>
                         <CardContent
                             sx={{
                                 display: "flex",
@@ -79,29 +108,32 @@ export default function GraduationRequests() {
                         >
                             {/* Left: Image + Name */}
                             <Box display="flex" alignItems="center" gap={2}>
-                                <Avatar alt={req.name} src={req.image} />
-                                <Typography fontWeight={500}>{req.name}</Typography>
+                                <Avatar alt={req.studentName} src={req.senderPic||"/images/user1.jpg"} />
+                                <Typography fontWeight={500}>{req.senderName}</Typography>
                             </Box>
 
                             {/* Middle: Project Title */}
-                            <Typography>{req.project}</Typography>
+                            <Typography>{req.projectName}</Typography>
 
                             {/* Right: Buttons */}
+                                {req.status==="Rejected"?<Box display="flex" gap={1}>
+                                    <Typography color="error">Rejected</Typography>
+                                </Box>:
                             <Box display="flex" gap={1}>
                                 <Button
                                     variant="outlined"
-                                    onClick={() => handleRemove(req.id)}
+                                    onClick={() => handleRemove(req.requestId)}
                                 >
                                     Remove
                                 </Button>
                                 <Button
                                     variant="contained"
                                     sx={{ backgroundColor: primaryColor }}
-                                    onClick={() => handleAccept(req.id)}
+                                    onClick={() => handleAccept(req.requestId,req.projectId)}
                                 >
-                                    Accept
+                                    {req.status==="Pending"?"Accept":"Accept"}
                                 </Button>
-                            </Box>
+                            </Box>}
                         </CardContent>
                     </Card>
                 ))}

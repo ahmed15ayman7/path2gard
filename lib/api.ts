@@ -102,6 +102,21 @@ export const trackApi = {
         const url = `/api/Track/TrackRate`;
         const response = await api.get(url);
         return response.data;
+    },
+    getAllTracks: async () => {
+        const url = `/api/Track/GetAllTracks`;
+        const response = await api.get(url);
+        return response.data;
+    },
+    addTrack: async (track:any) => {
+        const url = `/api/Track/AddTrack`;
+        const response = await api.post(url,track);
+        return response.data;
+    },
+    updateTrackByTrackId: async (trackId:string,track:any) => {
+        const url = `/api/Track/UpdateTrack/${trackId}`;
+        const response = await api.put(url,track);
+        return response.data;
     }
 }
 export const projectApi = {
@@ -230,6 +245,59 @@ export const doctorApi = {
     getProjectFields: async () => {
         const url = `/api/Doctor/ProjectFields`;
         const response = await api.get(url);
+        return response.data;
+    },
+    getProjectRequest: async () => {
+        const url = `/api/Doctor/ProjectRequest`;
+        const response = await api.get(url);
+        return response.data;
+    },
+    statusRequest: async (requestId:number,status:string,projectId:number) => {
+        const url = `/api/Doctor/StatusRequest`;
+        const response = await api.post(url,{
+            "requestId": requestId,
+            "status": status,
+            "projectId": projectId
+        });
+        return response.data;
+    }
+}
+export const studentApi = {
+    studentRequest: async (receiverId:number) => {
+        const url = `/api/Student/StudentRequest`;
+        const response = await api.post(url,{
+            "receiverId": receiverId
+        });
+        return response.data;
+    },
+    getStudentRequest: async () => {
+        const url = `/api/Student/StudentRequest`;
+        const response = await api.get(url);
+        return response.data;
+    },
+    statusRequest: async (requestId:number,status:string,projectId:number) => {
+        const url = `/api/Student/StatusRequest`;
+        const response = await api.post(url,{
+            "requestId": requestId,
+            "status": status,
+            "projectId": projectId
+        });
+        return response.data;
+    }
+}
+export const teachingAssistantApi = {
+    getProjectRequest: async () => {
+        const url = `/api/TeachingAssistant/ProjectRequest`;
+        const response = await api.get(url);
+        return response.data;
+    },
+    statusRequest: async (requestId:number,status:string,projectId:number) => {
+        const url = `/api/TeachingAssistant/StatusRequest`;
+        const response = await api.post(url,{
+            "requestId": requestId,
+            "status": status,
+            "projectId": projectId
+        });
         return response.data;
     }
 }

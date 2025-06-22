@@ -1,6 +1,215 @@
 {
   "projects": [
     {
+      "id": "h2poa8d5vao",
+      "icon": "📦",
+      "title": "",
+      "projectName": "",
+      "projectDescription": "",
+      "specification": "",
+      "projectField": [],
+      "teamSize": 4,
+      "members": [],
+      "projectFiles": [],
+      "projectRequirements": [],
+      "description": ""
+    },
+    {
+      "id": "3giamn4xt9x",
+      "icon": "📦",
+      "title": "Cybersecurity Dashboard",
+      "projectName": "Cybersecurity Dashboard",
+      "projectDescription": "A dashboard for monitoring network security threats",
+      "specification": "A dashboard for monitoring network security threats",
+      "projectField": [
+        "AI",
+        "Backend",
+        "FrontEnd",
+        "Data Science",
+        "Cybersecurity"
+      ],
+      "teamSize": 4,
+      "members": [
+        {
+          "id": "lisa.robinson@student.edu",
+          "name": "Lisa Robinson",
+          "image": "/images/user2.jpg",
+          "field": "Backend",
+          "role": "Student"
+        },
+        {
+          "id": "james.clark@student.edu",
+          "name": "James Clark",
+          "image": "/images/user1.jpg",
+          "field": "FrontEnd",
+          "role": "Student"
+        },
+        {
+          "id": "patricia.lewis@student.edu",
+          "name": "Patricia Lewis",
+          "image": "/images/user2.jpg",
+          "field": "Cybersecurity",
+          "role": "Student"
+        },
+        {
+          "id": "christopher.lee@student.edu",
+          "name": "Christopher Lee",
+          "image": "/images/user1.jpg",
+          "field": "Data Science",
+          "role": "Student"
+        }
+      ],
+      "supervisor": {
+        "id": 1,
+        "name": "Dr. Smith",
+        "image": "",
+        "field": "Artificial Intelligence",
+        "role": "Doctor"
+      },
+      "projectFiles": [],
+      "projectRequirements": [],
+      "description": "A dashboard for monitoring network security threats"
+    },
+    {
+      "id": "pm4xyc8uum",
+      "icon": "📦",
+      "title": "huu",
+      "projectName": "huu",
+      "projectDescription": "",
+      "projectField": [],
+      "teamSize": 3,
+      "members": [
+        {
+          "id": "lisa.robinson@student.edu",
+          "name": "Lisa Robinson",
+          "image": "/images/user2.jpg",
+          "field": "AI",
+          "role": "Student"
+        },
+        {
+          "id": "james.clark@student.edu",
+          "name": "James Clark",
+          "image": "/images/user1.jpg",
+          "field": "AI",
+          "role": "Student"
+        },
+        {
+          "id": "christopher.lee@student.edu",
+          "name": "Christopher Lee",
+          "image": "/images/user1.jpg",
+          "field": "AI",
+          "role": "Student"
+        }
+      ],
+      "supervisor": {
+        "id": "smith@university.edu",
+        "name": "Dr. Smith",
+        "image": "/images/user1.jpg",
+        "field": "AI",
+        "email": "smith@university.edu",
+        "role": "Doctor"
+      },
+      "projectFiles": [],
+      "projectRequirements": [],
+      "description": ""
+    },
+    {
+      "id": "study-mate",
+      "title": "Study Mate",
+      "icon": "📚",
+      "description": "An AI-powered study assistant for students.",
+      "specification": "An intelligent study assistant that helps students organize their study materials, create study schedules, and track their progress. Features include AI-powered content summarization and quiz generation.",
+      "team": {
+        "composition": {
+          "backend": 1,
+          "frontend": 1,
+          "ai": 2
+        },
+        "supervisor": {
+          "name": "Dr. Ahmed Khalid Ali",
+          "role": "Supervisor",
+          "image": "/avatars/ahmed-khalid.jpg",
+          "status": "online"
+        },
+        "coSupervisor": {
+          "name": "Eng. Rania Mohamed",
+          "role": "Co-Supervisor",
+          "image": "/avatars/rania-mohamed.jpg",
+          "status": "online"
+        },
+        "members": []
+      },
+      "fields": [
+        "AI",
+        "Education",
+        "Web"
+      ]
+    },
+    {
+      "id": "health-pal",
+      "title": "Health Pal",
+      "icon": "🏥",
+      "description": "A health app that tracks activities, diet, sleep, and exercise.",
+      "specification": "An AI-powered health tracking application that provides personalized recommendations for diet, exercise, and sleep patterns. Includes integration with wearable devices and health monitoring systems.",
+      "team": {
+        "composition": {
+          "backend": 1,
+          "frontend": 1,
+          "ai": 2
+        },
+        "supervisor": {
+          "name": "Dr. Ahmed Khalid Ali",
+          "role": "Supervisor",
+          "image": "/avatars/ahmed-khalid.jpg",
+          "status": "online"
+        },
+        "coSupervisor": {
+          "name": "Eng. Rania Mohamed",
+          "role": "Co-Supervisor",
+          "image": "/avatars/rania-mohamed.jpg",
+          "status": "online"
+        },
+        "members": []
+      },
+      "fields": [
+        "AI",
+        "Healthcare",
+        "Mobile"
+      ]
+    },
+    {
+      "id": "gym-system",
+      "title": "Gym system",
+      "icon": "💪",
+      "description": "A system for managing gym operations, including member registrations.",
+      "specification": "A comprehensive gym management system that handles member registrations, class scheduling, trainer assignments, and payment processing. Includes features for tracking member progress and attendance.",
+      "team": {
+        "composition": {
+          "backend": 1,
+          "frontend": 2,
+          "mobile": 1
+        },
+        "supervisor": {
+          "name": "Dr. Ahmed Khalid Ali",
+          "role": "Supervisor",
+          "image": "/avatars/ahmed-khalid.jpg",
+          "status": "online"
+        },
+        "coSupervisor": {
+          "name": "Eng. Rania Mohamed",
+          "role": "Co-Supervisor",
+          "image": "/avatars/rania-mohamed.jpg",
+          "status": "online"
+        },
+        "members": []
+      },
+      "fields": [
+        "Mobile",
+        "Web",
+        "Management"
+      ]
+    },
+    {
       "id": "bank-system",
       "title": "Bank system",
       "icon": "🏦",
@@ -47,143 +256,60 @@
       ]
     },
     {
-      "id": "gym-system",
-      "title": "Gym system",
-      "icon": "💪",
-      "description": "A system for managing gym operations, including member registrations.",
-      "specification": "A comprehensive gym management system that handles member registrations, class scheduling, trainer assignments, and payment processing. Includes features for tracking member progress and attendance.",
-      "team": {
-        "composition": {
-          "backend": 1,
-          "frontend": 2,
-          "mobile": 1
-        },
-        "supervisor": {
-          "name": "Dr. Ahmed Khalid Ali",
-          "role": "Supervisor",
-          "image": "/avatars/ahmed-khalid.jpg",
-          "status": "online"
-        },
-        "coSupervisor": {
-          "name": "Eng. Rania Mohamed",
-          "role": "Co-Supervisor",
-          "image": "/avatars/rania-mohamed.jpg",
-          "status": "online"
-        },
-        "members": []
-      },
-      "fields": [
-        "Mobile",
-        "Web",
-        "Management"
-      ]
-    },
-    {
-      "id": "health-pal",
-      "title": "Health Pal",
-      "icon": "🏥",
-      "description": "A health app that tracks activities, diet, sleep, and exercise.",
-      "specification": "An AI-powered health tracking application that provides personalized recommendations for diet, exercise, and sleep patterns. Includes integration with wearable devices and health monitoring systems.",
-      "team": {
-        "composition": {
-          "backend": 1,
-          "frontend": 1,
-          "ai": 2
-        },
-        "supervisor": {
-          "name": "Dr. Ahmed Khalid Ali",
-          "role": "Supervisor",
-          "image": "/avatars/ahmed-khalid.jpg",
-          "status": "online"
-        },
-        "coSupervisor": {
-          "name": "Eng. Rania Mohamed",
-          "role": "Co-Supervisor",
-          "image": "/avatars/rania-mohamed.jpg",
-          "status": "online"
-        },
-        "members": []
-      },
-      "fields": [
-        "AI",
-        "Healthcare",
-        "Mobile"
-      ]
-    },
-    {
-      "id": "study-mate",
-      "title": "Study Mate",
-      "icon": "📚",
-      "description": "An AI-powered study assistant for students.",
-      "specification": "An intelligent study assistant that helps students organize their study materials, create study schedules, and track their progress. Features include AI-powered content summarization and quiz generation.",
-      "team": {
-        "composition": {
-          "backend": 1,
-          "frontend": 1,
-          "ai": 2
-        },
-        "supervisor": {
-          "name": "Dr. Ahmed Khalid Ali",
-          "role": "Supervisor",
-          "image": "/avatars/ahmed-khalid.jpg",
-          "status": "online"
-        },
-        "coSupervisor": {
-          "name": "Eng. Rania Mohamed",
-          "role": "Co-Supervisor",
-          "image": "/avatars/rania-mohamed.jpg",
-          "status": "online"
-        },
-        "members": []
-      },
-      "fields": [
-        "AI",
-        "Education",
-        "Web"
-      ]
-    },
-    {
-      "id": "pm4xyc8uum",
+      "id": "vut15yoib6q",
       "icon": "📦",
-      "title": "huu",
-      "projectName": "huu",
-      "projectDescription": "",
-      "projectField": [],
-      "teamSize": 3,
+      "title": "Cybersecurity Dashboard",
+      "projectName": "Cybersecurity Dashboard",
+      "projectDescription": "A dashboard for monitoring network security threats",
+      "specification": "A dashboard for monitoring network security threats",
+      "projectField": [
+        "AI",
+        "Backend",
+        "FrontEnd",
+        "Data Science",
+        "Cybersecurity"
+      ],
+      "teamSize": 4,
       "members": [
         {
           "id": "lisa.robinson@student.edu",
           "name": "Lisa Robinson",
           "image": "/images/user2.jpg",
-          "field": "AI",
+          "field": "Backend",
           "role": "Student"
         },
         {
           "id": "james.clark@student.edu",
           "name": "James Clark",
           "image": "/images/user1.jpg",
-          "field": "AI",
+          "field": "FrontEnd",
+          "role": "Student"
+        },
+        {
+          "id": "patricia.lewis@student.edu",
+          "name": "Patricia Lewis",
+          "image": "/images/user2.jpg",
+          "field": "Cybersecurity",
           "role": "Student"
         },
         {
           "id": "christopher.lee@student.edu",
           "name": "Christopher Lee",
           "image": "/images/user1.jpg",
-          "field": "AI",
+          "field": "Data Science",
           "role": "Student"
         }
       ],
       "supervisor": {
-        "id": "smith@university.edu",
+        "id": 1,
         "name": "Dr. Smith",
-        "image": "/images/user1.jpg",
-        "field": "AI",
-        "email": "smith@university.edu",
+        "image": "",
+        "field": "Artificial Intelligence",
         "role": "Doctor"
       },
       "projectFiles": [],
       "projectRequirements": [],
-      "description": ""
+      "description": "A dashboard for monitoring network security threats"
     }
   ]
 }
