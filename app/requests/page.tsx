@@ -48,13 +48,14 @@ export default function GraduationRequests() {
     // const [requests, setRequests] = useState(initialRequests);
     let {userEmail} = useUserEmail();
     let [projectRequests, setProjectRequests] = useState([]);
+    let [isfinished,setIsFinished] = useState(0);
     useEffect(() => {
         let getProjectRequests = async () => {
             let response =userEmail?.role==="Doctor"?await doctorApi.getProjectRequest():userEmail?.role==="TeachingAssistant"?await teachingAssistantApi.getProjectRequest():await studentApi.getStudentRequest();
             setProjectRequests(response);
         }
         getProjectRequests();
-    }, []);
+    }, [isfinished]);
 
     const handleRemove = async (id: number) => {
         let toastId = toast.loading("Request removed...");
@@ -63,21 +64,25 @@ export default function GraduationRequests() {
             if(response.status===200){
                 toast.update(toastId, { render: "Request removed successfully", type: "success", isLoading: false, autoClose: 3000 });
             }
+            setIsFinished(Math.random());
         }catch(error){
+            setIsFinished(Math.random());
             toast.update(toastId, { render: "Request failed", type: "error", isLoading: false, autoClose: 3000 });
         }
     };
-
+    
     const handleAccept = async (id: number,projectId:number) => {
         let toastId = toast.loading("Request accepted...");
         try{
-        let response = userEmail?.role==="Doctor"?await doctorApi.statusRequest(id,"Accept",0):userEmail?.role==="TeachingAssistant"?await teachingAssistantApi.statusRequest(id,"Accept",projectId):await studentApi.statusRequest(id,"Accept",projectId);
-        if(response.status===200){
-            toast.update(toastId, { render: "Request accepted successfully", type: "success", isLoading: false, autoClose: 3000 });
+            let response = userEmail?.role==="Doctor"?await doctorApi.statusRequest(id,"Accept",0):userEmail?.role==="TeachingAssistant"?await teachingAssistantApi.statusRequest(id,"Accept",projectId):await studentApi.statusRequest(id,"Accept",projectId);
+            if(response.status===200){
+                toast.update(toastId, { render: "Request accepted successfully", type: "success", isLoading: false, autoClose: 3000 });
             }else{
                 toast.update(toastId, { render: "Request failed", type: "error", isLoading: false, autoClose: 3000 });
             }
+            setIsFinished(Math.random());
         }catch(error){
+            setIsFinished(Math.random());
             toast.update(toastId, { render: "Request failed", type: "error", isLoading: false, autoClose: 3000 });
         }
     };
