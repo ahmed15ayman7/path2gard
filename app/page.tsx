@@ -8,7 +8,7 @@ export default function Home() {
     redirect("/dashboard");
   } else if (userType === "Doctor") {
     redirect("/doctor/graduation-project");
-  } else if (userType === "Assistant") {
+  } else if (userType === "TeachingAssistant") {
     redirect("/ta/tracking");
   } else if (userType === "Admin") {
     redirect("/admin/graduation-project");

@@ -1,7 +1,7 @@
 import CustomizeProject from "@/components/project/CustomizeProject";
 import { Suspense } from "react";
 
-export  function CustomizeProjectPage() {
+ function CustomizeProjectPage() {
   return <CustomizeProject />;
 }
 export default function CustomizeProjectPageWrapper() {

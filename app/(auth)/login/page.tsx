@@ -10,7 +10,7 @@ import { useUserStore, useUserEmail } from "@/lib/zustand";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { signIn } from "next-auth/react";
-type UserType = "Student" | "Doctor" | "TeachingAssistant" | "ProjectAdmin";
+type UserType = "Student" | "Doctor" | "TeachingAssistant" | "Admin";
 const schema = z.object({
   email: z.string().email("Invalid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
@@ -46,7 +46,7 @@ export default function SignIn() {
         email,
         password,
         name:email.split("@")[0],
-        role,
+        role:role==="Admin"?"ProjectAdmin":role,
         redirect: false,
       });
         switch (role) {
