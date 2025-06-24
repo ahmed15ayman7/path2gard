@@ -119,9 +119,9 @@ export default function ProjectDetails({ params }: { params: Promise<{ id: strin
                     <Grid item xs={12} md={6}>
                         <Paper style={styles.paper}>
                             <Typography variant="h6" style={styles.sectionTitle}>{projectData.title}</Typography>
-                            <TextField label="Project Name" defaultValue={projectData.projectName} fullWidth margin="normal" />
+                            {/* <TextField label="Project Name" defaultValue={projectData.projectName} fullWidth margin="normal" /> */}
                             <Typography variant="h6" style={styles.sectionTitle}>Brief About Project</Typography>
-                            <TextField label="Description" multiline rows={4} defaultValue={projectData.projectDescription} fullWidth margin="normal" />
+                            <TextField  multiline rows={4} defaultValue={projectData.projectDescription} fullWidth margin="normal" />
                             <Typography variant="h6" style={styles.sectionTitle}>Project Field</Typography>
                             <Box display="flex" gap={1}>
                                 {projectData.projectField.map((field: any) => (
