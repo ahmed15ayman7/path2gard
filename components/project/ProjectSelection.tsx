@@ -28,10 +28,10 @@ const ProjectSelection = () => {
     const fetchData = async () => {
       try {
         // Replace with your actual API call
-        const response = await projectApi.getProjectData();
-        const data: ProjectData = response;
+        // const response = await projectApi.getProjectData();
+        // const data: ProjectData = response;
 
-        setProjectData(data);
+        // setProjectData(data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching project data:", error);

@@ -74,7 +74,7 @@ export default function GraduationRequests() {
     const handleAccept = async (id: number,projectId:number) => {
         let toastId = toast.loading("Request accepted...");
         try{
-            let response = userEmail?.role==="Doctor"?await doctorApi.statusRequest(id,"Accept",0):userEmail?.role==="TeachingAssistant"?await teachingAssistantApi.statusRequest(id,"Accept",projectId):await studentApi.statusRequest(id,"Accept",projectId);
+            let response = userEmail?.role==="Doctor"?await doctorApi.statusRequest(id,"Accept",projectId):userEmail?.role==="TeachingAssistant"?await teachingAssistantApi.statusRequest(id,"Accept",projectId):await studentApi.statusRequest(id,"Accept",projectId);
             if(response.status===200){
                 toast.update(toastId, { render: "Request accepted successfully", type: "success", isLoading: false, autoClose: 3000 });
             }else{

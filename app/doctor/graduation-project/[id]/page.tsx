@@ -140,9 +140,9 @@ export default function Home({ params }: { params: Promise<{ id: string }> }) {
                     <Grid item xs={12} md={6}>
                         <Paper style={styles.paper}>
                             <Typography variant="h6" style={styles.sectionTitle}>Project Name</Typography>
-                            <TextField label="Project Name" defaultValue={projectData?.projectName} fullWidth margin="normal" />
+                            <TextField defaultValue={projectData?.projectName} fullWidth margin="normal" />
                             <Typography variant="h6" style={styles.sectionTitle}>Brief About Project</Typography>
-                            <TextField label="Description" multiline rows={4} defaultValue={projectData?.description} fullWidth margin="normal" />
+                            <TextField  multiline rows={4} defaultValue={projectData?.description} fullWidth margin="normal" />
                             <Typography variant="h6" style={styles.sectionTitle}>Project Field</Typography>
                             <Box display="flex" gap={1}>
                                 {projectData?.projectFields.map((field) => (

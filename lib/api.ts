@@ -212,6 +212,11 @@ export const projectAdminApi = {
         const url = `/api/ProjectAdmin/Projects`;
         const response = await api.get(url);
         return response.data;
+    },
+    getProjectById: async (id:string) => {
+        const url = `/api/ProjectAdmin/ProjectById/${id}`;
+        const response = await api.get(url);
+        return response.data;
     }
 }
 export const taApi = {
@@ -301,5 +306,6 @@ export const teachingAssistantApi = {
         return response.data;
     }
 }
+
 
 export default api;

@@ -16,9 +16,10 @@ import {
 import { Description, InsertDriveFile, Upload } from "@mui/icons-material";
 import { Download } from "@mui/icons-material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
+import { downListApi, projectAdminApi } from "@/lib/api";
 
 const theme = createTheme({
     palette: {
@@ -54,28 +55,29 @@ interface Project {
     projectRequirements: string[];
 }
 
-export default function ProjectDetails() {
-    const params = useParams();
-    const [project, setProject] = useState<any | null>(null);
+export default function ProjectDetails({ params }: { params: Promise<{ id: string }> }) {
     const router = useRouter();
+    const { id } = use(params);
+    const [projectData, setProjectData] = useState<Project | null>(null);
+    let [projectFields, setProjectFields] = useState<{
+        fieldId: number;
+        fieldName: string;
+    }[]>([]);
     useEffect(() => {
-        const fetchProject = async () => {
-            try {
-                const response = await axios.get(`/api/projects`);
-                const projects = response.data;
-                const project = projects.find((p: any) => p.id === params.id);
-                if (project) {
-                    setProject(project);
-                }
-            } catch (error) {
-                console.error("Error fetching project:", error);
-            }
-        };
+        let getProjectData = async () => {
+            let response = await projectAdminApi.getProjectById(id);
+            console.log(response);
+            setProjectData(response);
+            getProjectFields();
+        }
+        let getProjectFields = async () => {
+            let response = await downListApi.getProjectField();
+            setProjectFields(response);
+        }
+        getProjectData();
+    }, [id]);
 
-        fetchProject();
-    }, [params.id]);
-
-    if (!project) {
+    if (!projectData) {
         return <div className="flex justify-center items-center h-screen">
             <div className="text-2xl font-bold"> ❌ No project found</div>
         </div>;
@@ -116,28 +118,28 @@ export default function ProjectDetails() {
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={6}>
                         <Paper style={styles.paper}>
-                            <Typography variant="h6" style={styles.sectionTitle}>{project.title}</Typography>
-                            <TextField label="Project Name" defaultValue={project.projectName} fullWidth margin="normal" />
+                            <Typography variant="h6" style={styles.sectionTitle}>{projectData.title}</Typography>
+                            <TextField label="Project Name" defaultValue={projectData.projectName} fullWidth margin="normal" />
                             <Typography variant="h6" style={styles.sectionTitle}>Brief About Project</Typography>
-                            <TextField label="Description" multiline rows={4} defaultValue={project.projectDescription} fullWidth margin="normal" />
+                            <TextField label="Description" multiline rows={4} defaultValue={projectData.projectDescription} fullWidth margin="normal" />
                             <Typography variant="h6" style={styles.sectionTitle}>Project Field</Typography>
                             <Box display="flex" gap={1}>
-                                {project.projectField.map((field: any) => (
+                                {projectData.projectField.map((field: any) => (
                                     <Button key={field} variant="outlined" color="primary" size="small">{field}</Button>
                                 ))}
                             </Box>
                             <Typography variant="h6" style={styles.sectionTitle}>Number of team members</Typography>
-                            <TextField type="number" defaultValue={project.teamSize} fullWidth margin="normal" />
+                            <TextField type="number" defaultValue={projectData.teamSize} fullWidth margin="normal" />
                         </Paper>
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <Paper style={styles.paper}>
                             <Typography variant="h6" style={styles.sectionTitle}>Project members and supervisors</Typography>
                             <Typography variant="subtitle1">Supervisor</Typography>
-                            {project.supervisor && (
-                                <Box key={project.supervisor.id} style={styles.listItem}>
-                                    <Avatar alt={project.supervisor.name} src={project.supervisor.image} />
-                                    <ListItemText primary={project.supervisor.name} secondary={project.supervisor.role} />
+                            {projectData.supervisor && (
+                                <Box key={projectData.supervisor.id} style={styles.listItem}>
+                                    <Avatar alt={projectData.supervisor.name} src={projectData.supervisor.image} />
+                                    <ListItemText primary={projectData.supervisor.name} secondary={projectData.supervisor.role} />
                                 </Box>
                             )}
                             {/* <Typography variant="subtitle1">Co-Supervisor</Typography>
@@ -149,7 +151,7 @@ export default function ProjectDetails() {
                             )} */}
                             <Typography variant="subtitle1">Team Members</Typography>
                             <List>
-                                {project.members?.map((member: any) => (
+                                {projectData.members?.map((member: any) => (
                                     <ListItem key={member.id} style={styles.listItem}>
                                         <ListItemAvatar>
                                             <Avatar alt={member.name} src={member.image} />
@@ -166,7 +168,7 @@ export default function ProjectDetails() {
                                 <Description /> Project Requirements
                             </Typography>
                             <List>
-                                {project.projectRequirements.map((req: any) => (
+                                {projectData.projectRequirements.map((req: any) => (
                                     <ListItem key={req}>
                                         <ListItemText primary={req} />
                                     </ListItem>
@@ -188,7 +190,7 @@ export default function ProjectDetails() {
                                 <InsertDriveFile /> Project Files
                             </Typography>
                             <List>
-                                {project.projectFiles.map((file: any) => (
+                                {projectData.projectFiles.map((file: any) => (
                                     <ListItem key={file.name} style={styles.fileItem}>
                                         <ListItemText primary={file.name} />
                                         <Button variant="outlined" color="primary" startIcon={<Download />}>Download</Button>
@@ -200,16 +202,16 @@ export default function ProjectDetails() {
                 </Grid>
                 <div className="flex justify-center items-center my-4 gap-4">
                     <Button variant="contained" color="primary" onClick={() => {
-                        fetch(`/api/projects/${params.id}`, {
+                        fetch(`/api/projects/${id}`, {
                             method: "PUT",
-                            body: JSON.stringify(project),
+                            body: JSON.stringify(projectData),
                         });
                         router.push("/admin/graduation-project");
                     }}>
                         Submit Project
                     </Button>
                     <Button variant="contained" color="error" onClick={() => {
-                        fetch(`/api/projects?id=${params.id}`, {
+                        fetch(`/api/projects?id=${id}`, {
                             method: "DELETE",
                         });
                         router.push("/admin/graduation-project");
